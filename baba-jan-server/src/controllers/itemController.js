@@ -1,73 +1,65 @@
 const Item = require('../models/Item');
-const Notification = require('../models/Notification');
-const { handleError } = require('../middleware/errorHandler');
-const { validateItem } = require('../utils/validators');
+const validators = require('../utils/validators'); // For validating input data
+const helpers = require('../utils/helpers'); // For utility functions
+const { handleError } = require('../middleware/errorHandler'); // Centralized error handling
+
 const itemController = {};
 
-// ==================== ITEM MANAGEMENT ====================
-
-// 1. Create a new item
+// Create a new item
 itemController.createItem = async (req, res) => {
-  const { error } = validateItem(req.body);
-  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
-
   try {
-    // Make sure price and unit are properly handled
-    if (!req.body.unit) req.body.unit = 'kg'; // Default to kg if unit is not provided
+    const { error } = validators.validateItem(req.body);
+    if (error) {
+      return res.status(400).json({ success: false, message: error.details[0].message });
+    }
 
-    const newItem = await Item.create(req.body);
+    const newItem = new Item(req.body);
+    await newItem.save();
 
-    // Notify admin about the new item creation
-    await Notification.create({
-      recipient: req.adminId,
-      type: 'system',
-      title: 'New Item Created',
-      message: `The item "${req.body.name.en}" has been created successfully.`,
-    });
-
-    res.status(201).json({ success: true, data: newItem });
+    res.status(201).json({ success: true, message: 'Item created successfully.', data: newItem });
   } catch (err) {
     handleError(res, err);
   }
 };
 
-// 2. Get all items (with filters, pagination, and sorting)
+// Get all items with optional filters and pagination
 itemController.getAllItems = async (req, res) => {
-  const { category, available, search, sortBy = 'createdAt', order = 'desc', page = 1, limit = 10 } = req.query;
   try {
-    const query = { isDeleted: false };
+    const { category, available, page = 1, limit = 10 } = req.query;
 
-    if (category) query.category = category;
-    if (available) query.available = available === 'true';
-    if (search) query.name = { $regex: search, $options: 'i' }; // Case-insensitive search
+    const filters = { isDeleted: false };
+    if (category) filters.category = category;
+    if (available !== undefined) filters.available = available === 'true';
 
-    const items = await Item.find(query)
-      .sort({ [sortBy]: order === 'asc' ? 1 : -1 })
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
+    let query = Item.find(filters);
+    query = helpers.paginate(query, page, limit);
 
-    const totalItems = await Item.countDocuments(query);
+    const items = await query.exec();
+    const totalCount = await Item.countDocuments(filters);
 
     res.status(200).json({
       success: true,
       data: items,
-      pagination: {
-        total: totalItems,
-        page,
-        limit,
-      },
+      meta: { total: totalCount, page, limit },
     });
   } catch (err) {
     handleError(res, err);
   }
 };
 
-// 3. Get item details by ID
+// Get a single item by ID
 itemController.getItemById = async (req, res) => {
-  const { itemId } = req.params;
   try {
-    const item = await Item.findOne({ _id: itemId, isDeleted: false });
-    if (!item) return res.status(404).json({ success: false, message: 'Item not found.' });
+    const { id } = req.params;
+
+    if (!helpers.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid item ID.' });
+    }
+
+    const item = await Item.findById(id);
+    if (!item || item.isDeleted) {
+      return res.status(404).json({ success: false, message: 'Item not found.' });
+    }
 
     res.status(200).json({ success: true, data: item });
   } catch (err) {
@@ -75,111 +67,67 @@ itemController.getItemById = async (req, res) => {
   }
 };
 
-// 4. Update an item
+// Update an existing item
 itemController.updateItem = async (req, res) => {
-  const { itemId } = req.params;
-  const { error } = validateItem(req.body);
-  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
-
   try {
-    // Update the unit or price if necessary
-    if (req.body.unit && req.body.price) {
-      if (req.body.unit === 'kg') {
-        // Make sure the price matches the unit, if required
-        req.body.price = req.body.price; // Price per kg stays as-is
-      }
-      // Conversion logic can be applied if needed, for example if price per gram needs to be calculated
+    const { id } = req.params;
+
+    if (!helpers.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid item ID.' });
     }
 
-    const updatedItem = await Item.findByIdAndUpdate(itemId, req.body, { new: true });
-    if (!updatedItem) return res.status(404).json({ success: false, message: 'Item not found.' });
+    const { error } = validators.validateItem(req.body);
+    if (error) {
+      return res.status(400).json({ success: false, message: error.details[0].message });
+    }
 
-    // Notify admin about the item update
-    await Notification.create({
-      recipient: req.adminId,
-      type: 'system',
-      title: 'Item Updated',
-      message: `The item "${updatedItem.name.en}" has been updated successfully.`,
-    });
+    const updatedItem = await Item.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+    if (!updatedItem || updatedItem.isDeleted) {
+      return res.status(404).json({ success: false, message: 'Item not found or deleted.' });
+    }
 
-    res.status(200).json({ success: true, data: updatedItem });
+    res.status(200).json({ success: true, message: 'Item updated successfully.', data: updatedItem });
   } catch (err) {
     handleError(res, err);
   }
 };
 
-// 5. Soft delete an item
+// Soft delete an item
 itemController.deleteItem = async (req, res) => {
-  const { itemId } = req.params;
   try {
-    const item = await Item.findById(itemId);
-    if (!item) return res.status(404).json({ success: false, message: 'Item not found.' });
+    const { id } = req.params;
 
-    await item.softDelete('Admin deleted the item');
+    if (!helpers.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid item ID.' });
+    }
 
-    // Notify admin about the item deletion
-    await Notification.create({
-      recipient: req.adminId,
-      type: 'system',
-      title: 'Item Deleted',
-      message: `The item "${item.name.en}" has been deleted.`,
-    });
+    const item = await Item.findById(id);
+    if (!item || item.isDeleted) {
+      return res.status(404).json({ success: false, message: 'Item not found.' });
+    }
 
+    await item.softDelete();
     res.status(200).json({ success: true, message: 'Item deleted successfully.' });
   } catch (err) {
     handleError(res, err);
   }
 };
 
-// 6. Toggle item availability
-itemController.toggleItemAvailability = async (req, res) => {
-  const { itemId } = req.params;
+// Restore a soft-deleted item
+itemController.restoreItem = async (req, res) => {
   try {
-    const item = await Item.findById(itemId);
-    if (!item) return res.status(404).json({ success: false, message: 'Item not found.' });
+    const { id } = req.params;
 
-    item.available = !item.available;
-    await item.save();
+    if (!helpers.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid item ID.' });
+    }
 
-    // Notify admin about the availability change
-    await Notification.create({
-      recipient: req.adminId,
-      type: 'system',
-      title: 'Item Availability Updated',
-      message: `The availability of item "${item.name.en}" has been toggled to ${item.available ? 'available' : 'unavailable'}.`,
-    });
+    const item = await Item.findByIdAndUpdate(id, { isDeleted: false }, { new: true });
+    if (!item) {
+      return res.status(404).json({ success: false, message: 'Item not found.' });
+    }
 
-    res.status(200).json({ success: true, data: item, message: 'Item availability updated.' });
-  } catch (err) {
-    handleError(res, err);
-  }
-};
-
-// 7. Get items by category
-itemController.getItemsByCategory = async (req, res) => {
-  const { category } = req.params;
-  try {
-    const items = await Item.find({ category, isDeleted: false });
-    res.status(200).json({ success: true, data: items });
-  } catch (err) {
-    handleError(res, err);
-  }
-};
-
-// 8. Bulk update item stock
-itemController.bulkUpdateStock = async (req, res) => {
-  const { updates } = req.body; // Expecting [{ itemId, stock }]
-  try {
-    const bulkOps = updates.map(({ itemId, stock }) => ({
-      updateOne: {
-        filter: { _id: itemId },
-        update: { $set: { stock } },
-      },
-    }));
-
-    const result = await Item.bulkWrite(bulkOps);
-
-    res.status(200).json({ success: true, data: result, message: 'Stock updated successfully.' });
+    res.status(200).json({ success: true, message: 'Item restored successfully.', data: item });
   } catch (err) {
     handleError(res, err);
   }

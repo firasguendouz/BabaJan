@@ -1,19 +1,25 @@
 const express = require('express');
 const itemController = require('../controllers/itemController');
-const { verifyToken, verifyAdmin } = require('../middleware/auth');
+const { verifyToken, verifyAdmin } = require('../middleware/auth'); // Authentication middlewares
 
 const router = express.Router();
 
-// Public Routes
-router.get('/', itemController.getAllItems); // Get all items
-router.get('/:itemId', itemController.getItemById); // Get item details by ID
-router.get('/category/:category', itemController.getItemsByCategory); // Get items by category
+// Create a new item (Admin only)
+router.post('/', verifyToken, verifyAdmin, itemController.createItem);
 
-// Admin Routes
-router.post('/', verifyToken, verifyAdmin, itemController.createItem); // Create new item
-router.put('/:itemId', verifyToken, verifyAdmin, itemController.updateItem); // Update item
-router.delete('/:itemId', verifyToken, verifyAdmin, itemController.deleteItem); // Delete item
-router.patch('/:itemId/availability', verifyToken, verifyAdmin, itemController.toggleItemAvailability); // Toggle item availability
-router.patch('/bulk-stock', verifyToken, verifyAdmin, itemController.bulkUpdateStock); // Bulk update item stock
+// Get all items (Public)
+router.get('/', itemController.getAllItems);
+
+// Get a single item by ID (Public)
+router.get('/:id', itemController.getItemById);
+
+// Update an item (Admin only)
+router.put('/:id', verifyToken, verifyAdmin, itemController.updateItem);
+
+// Soft delete an item (Admin only)
+router.delete('/:id', verifyToken, verifyAdmin, itemController.deleteItem);
+
+// Restore a soft-deleted item (Admin only)
+router.patch('/:id/restore', verifyToken, verifyAdmin, itemController.restoreItem);
 
 module.exports = router;
