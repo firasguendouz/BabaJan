@@ -1,0 +1,154 @@
+/* General Header Styles */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007b55;
+  color: white;
+  padding: 16px 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-brand h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #d4f4e3;
+}
+
+.header-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.menu-button,
+.basket-button,
+.login-button {
+  background-color: white;
+  color: #007b55;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-button:hover,
+.basket-button:hover,
+.login-button:hover {
+  background-color: #005c41;
+  color: white;
+}
+
+/* Modal Menu Styles */
+.menu-modal {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  background-color: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.menu-modal ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-modal ul li {
+  margin-bottom: 8px;
+}
+
+.menu-modal ul li:last-child {
+  margin-bottom: 0;
+}
+
+.menu-modal ul li a {
+  color: #007b55;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.menu-modal ul li a:hover {
+  text-decoration: underline;
+}
+
+.close-menu-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-top: 12px;
+  font-size: 1rem;
+}
+
+.close-menu-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+
+.basket-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.basket-button:hover {
+  background-color: #0056b3;
+}
+
+.basket-button span {
+  font-weight: bold;
+}
+
