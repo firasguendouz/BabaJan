@@ -2,11 +2,34 @@ const mongoose = require('mongoose');
 
 // Define schema for order items
 const OrderItemSchema = new mongoose.Schema({
-  itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item', required: true },
-  variationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item.variations', required: true },
-  quantity: { type: Number, required: true, min: 1 },
-  price: { type: Number, required: true },
-  total: { type: Number, required: true },
+  itemId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Item',
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true, // Store item name at the time of order
+  },
+  unit: {
+    type: String,
+    enum: ['piece', 'kg', 'grams', 'liter', 'box'],
+    required: true, // Capture unit of the item for the order
+  },
+  price: {
+    type: Number,
+    required: true,
+    min: 0, // Price of one unit of the item
+  },
+  quantity: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
+  total: {
+    type: Number,
+    required: true, // Calculated as price * quantity
+  },
 });
 
 // Define schema for orders
@@ -75,7 +98,7 @@ const OrderSchema = new mongoose.Schema(
         type: { type: String, enum: ['pickup', 'delivery'], required: true },
         address: { type: String, required: function () { return this.type === 'delivery'; } },
         scheduledAt: { type: Date },
-        deliveredAt: { type: Date, default: null }, 
+        deliveredAt: { type: Date, default: null },
       }),
       required: true,
     },

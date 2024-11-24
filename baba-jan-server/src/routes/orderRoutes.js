@@ -11,7 +11,7 @@ router.get('/:orderId', verifyToken, orderController.getOrderDetails); // Get or
 router.patch('/:orderId/cancel', verifyToken, orderController.cancelOrder); // Cancel an order
 
 // Admin Routes
-router.get('/admin', verifyToken, orderController.getAllOrders); // Get all orders (admin)
-router.patch('/admin/status', verifyToken, orderController.updateOrderStatus); // Update order status (admin)
+router.get('/admin/:orderId', verifyToken, orderController.getOrderDetails); // Fetch order details
+router.patch('/admin/:orderId', verifyToken, orderController.updateOrderDetails); // Update order details
 
 module.exports = router;

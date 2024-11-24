@@ -11,7 +11,6 @@ import OrderDetailsPage from '../pages/OrderDetails';
 import Orders from '../pages/Orders';
 import PrivateRoute from './PrivateRoute';
 import Profile from '../pages/Profile';
-import Promotions from '../pages/Promotions';
 import React from 'react';
 import Register from '../pages/Register';
 
@@ -27,7 +26,6 @@ const AppRoutes = () => {
       <Route path="/orders/:orderId" element={<PrivateRoute component={OrderDetailsPage} />} />
       <Route path="/items" element={<Items />} />
       <Route path="/items/:itemId" element={<ItemDetailsPage />} />
-      <Route path="/promotions" element={<Promotions />} />
       <Route path="/admin" element={<AdminRoute component={AdminDashboard} />} />
     </Routes>
   );

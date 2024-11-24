@@ -1,56 +1,50 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// Middleware to verify and decode the token
 exports.verifyToken = async (req, res, next) => {
-  // Extract token from Authorization header
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ success: false, message: 'Unauthorized. Token missing.' });
-  }
-
   try {
-    // Verify and decode the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const token = req.headers.authorization?.split(' ')[1];
 
-    // Attach the user ID from the token to the request object
-    req.user = { _id: decoded.id };
-
-    // Optional: Fetch the user details from the database (if needed)
-    // const user = await User.findById(decoded.id).select('_id email name role');
-    // if (!user) {
-    //   return res.status(401).json({ success: false, message: 'Unauthorized. User not found.' });
-    // }
-    // req.user = user;
-
-    next(); // Continue to the next middleware or route handler
-  } catch (err) {
-    console.error('Error verifying token:', err.message);
-    return res.status(403).json({ success: false, message: 'Token is invalid.' });
-  }
-};
-
-exports.verifyAdmin = async (req, res, next) => {
-  try {
-    // Extract and decode the token
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    if (!token) return res.status(403).json({ success: false, message: 'Access denied. No token provided.' });
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-
-    // Fetch the user from the database
-    const user = await User.findById(req.user.id);
-    if (!user) return res.status(403).json({ success: false, message: 'Access denied. User not found.' });
-
-    // Check if the user is an admin
-    if (user.role !== 'admin') {
-      return res.status(403).json({ success: false, message: 'Access denied. Admin only.' });
+    if (!token) {
+      return res.status(401).json({ success: false, message: 'Unauthorized. Token missing.' });
     }
 
-    next();
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('Decoded Token:', decoded);
+
+    // Attach the decoded user details to the request object
+    req.user = { id: decoded.id, role: decoded.role };
+    console.log('User in Request:', req.user);
+
+    next(); // Pass control to the next middleware
   } catch (err) {
-    res.status(403).json({ success: false, message: 'Access denied. Invalid token.' });
+    console.error('Error verifying token:', err.message);
+    return res.status(401).json({ success: false, message: 'Unauthorized. Token is invalid or expired.' });
   }
 };
 
+// Middleware to verify admin or super-admin privileges
+exports.verifyAdmin = async (req, res, next) => {
+  try {
+    // Ensure `req.user` is populated
+    if (!req.user) {
+      return res.status(403).json({ success: false, message: 'Access denied. User not authenticated.' });
+    }
+
+    // Log the role for debugging
+    console.log('User Role:', req.user.role);
+
+    // Allow access for both 'admin' and 'super-admin'
+    if (req.user.role === 'admin' || req.user.role === 'super-admin') {
+      return next(); // User is authorized
+    }
+
+    // Reject if the user does not have sufficient privileges
+    return res.status(403).json({ success: false, message: 'Access denied. Admin only.' });
+  } catch (err) {
+    console.error('Error in verifyAdmin:', err.message);
+    return res.status(403).json({ success: false, message: 'Access denied. Invalid token or permissions.' });
+  }
+};

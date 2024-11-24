@@ -31,7 +31,6 @@ const App = () => {
                 links={[
                   { label: 'Home', href: '/' },
                   { label: 'Shop', href: '/items' },
-                  { label: 'Promotions', href: '/promotions' },
                   { label: 'Contact', href: '/contact' },
                 ]}
                 onBasketClick={handleBasketClick}

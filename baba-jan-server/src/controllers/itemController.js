@@ -1,35 +1,69 @@
 const Item = require('../models/Item');
-const validators = require('../utils/validators'); // For validating input data
-const helpers = require('../utils/helpers'); // For utility functions
-const { handleError } = require('../middleware/errorHandler'); // Centralized error handling
+const validators = require('../utils/validators'); // Validation utility
+const helpers = require('../utils/helpers'); // Utility functions
+const { handleError } = require('../middleware/errorHandler'); // Error handler
 
 const itemController = {};
 
 // Create a new item
 itemController.createItem = async (req, res) => {
   try {
+    // Validate incoming data
     const { error } = validators.validateItem(req.body);
     if (error) {
       return res.status(400).json({ success: false, message: error.details[0].message });
     }
 
+    // Ensure no unexpected fields are included
+    if (req.body.variations) {
+      return res.status(400).json({ success: false, message: '`variations` field is not allowed.' });
+    }
+
+    // Check for duplicate item based on unique fields if necessary (e.g., name and category)
+    const duplicateItem = await Item.findOne({
+      'name.en': req.body.name.en,
+      category: req.body.category,
+    });
+    if (duplicateItem) {
+      return res.status(400).json({
+        success: false,
+        message: `An item with the name "${req.body.name.en}" in category "${req.body.category}" already exists.`,
+      });
+    }
+
+    // Create a new item
     const newItem = new Item(req.body);
     await newItem.save();
 
-    res.status(201).json({ success: true, message: 'Item created successfully.', data: newItem });
+    res.status(201).json({
+      success: true,
+      message: 'Item created successfully.',
+      data: newItem,
+    });
   } catch (err) {
+    console.error('Error creating item:', err.message);
     handleError(res, err);
   }
 };
 
-// Get all items with optional filters and pagination
+// Get all items with filters and pagination
 itemController.getAllItems = async (req, res) => {
   try {
-    const { category, available, page = 1, limit = 10 } = req.query;
+    const { category, available, search, page = 1, limit = 10 } = req.query;
 
     const filters = { isDeleted: false };
     if (category) filters.category = category;
     if (available !== undefined) filters.available = available === 'true';
+    if (search) {
+      const regex = new RegExp(search, 'i'); // Case-insensitive search
+      filters.$or = [
+        { 'name.en': regex },
+        { 'name.de': regex },
+        { category: regex },
+        { 'description.en': regex },
+        { 'description.de': regex },
+      ];
+    }
 
     let query = Item.find(filters);
     query = helpers.paginate(query, page, limit);
@@ -43,6 +77,7 @@ itemController.getAllItems = async (req, res) => {
       meta: { total: totalCount, page, limit },
     });
   } catch (err) {
+    console.error('Error fetching items:', err.message);
     handleError(res, err);
   }
 };
@@ -63,6 +98,7 @@ itemController.getItemById = async (req, res) => {
 
     res.status(200).json({ success: true, data: item });
   } catch (err) {
+    console.error('Error fetching item by ID:', err.message);
     handleError(res, err);
   }
 };
@@ -88,6 +124,7 @@ itemController.updateItem = async (req, res) => {
 
     res.status(200).json({ success: true, message: 'Item updated successfully.', data: updatedItem });
   } catch (err) {
+    console.error('Error updating item:', err.message);
     handleError(res, err);
   }
 };
@@ -109,6 +146,7 @@ itemController.deleteItem = async (req, res) => {
     await item.softDelete();
     res.status(200).json({ success: true, message: 'Item deleted successfully.' });
   } catch (err) {
+    console.error('Error deleting item:', err.message);
     handleError(res, err);
   }
 };
@@ -129,6 +167,7 @@ itemController.restoreItem = async (req, res) => {
 
     res.status(200).json({ success: true, message: 'Item restored successfully.', data: item });
   } catch (err) {
+    console.error('Error restoring item:', err.message);
     handleError(res, err);
   }
 };

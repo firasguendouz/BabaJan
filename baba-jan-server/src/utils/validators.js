@@ -30,31 +30,22 @@ validators.validateLogin = (data) => {
 // Item Validation
 validators.validateItem = (data) => {
   const schema = Joi.object({
-      name: Joi.object({
-          en: Joi.string().required(),
-          ar: Joi.string().optional(),
-      }).required(),
-      category: Joi.string().valid('Fruits', 'Vegetables', 'Dairy', 'Beverages', 'Others').required(),
-      photos: Joi.array().items(Joi.string().uri()).optional(),
-      price: Joi.number().positive().required(),
-      stock: Joi.number().integer().min(0).required(),
-      available: Joi.boolean().optional(),
-      variations: Joi.array().items(
-          Joi.object({
-              size: Joi.string().valid('Small', 'Medium', 'Large', 'Custom').optional(),
-              weight: Joi.number().min(0).optional(),
-              price: Joi.number().min(0).required(),
-              discount: Joi.number().min(0).max(100).optional(),
-              sku: Joi.string().required(),
-              stock: Joi.number().min(0).optional(),
-              available: Joi.boolean().optional(),
-          })
-      ).optional(),
-      unit: Joi.string().valid('piece', 'kg', 'bunch', 'liter', 'box').default('piece'),
-      tags: Joi.array().items(Joi.string().valid('Organic', 'Seasonal', 'Imported', 'Local', 'Discounted')).optional(),
+    name: Joi.object({
+      en: Joi.string().required().trim().label('English Name'),
+      de: Joi.string().allow('').trim().label('German Name'), // Allow empty string
+    }).required().label('Name'),
+    category: Joi.string().valid('Fruits', 'Vegetables', 'Dairy', 'Beverages', 'Others').required(),
+    price: Joi.number().min(0).required(),
+    stock: Joi.number().min(0).default(0),
+    available: Joi.boolean().default(true),
+    photos: Joi.array().items(Joi.string().uri()).default([]),
+    unit: Joi.string().valid('piece', 'kg', 'grams', 'liter', 'box').default('piece'),
+    tags: Joi.array().items(Joi.string()).default([]),
   });
+
   return schema.validate(data);
 };
+
 
 // Order Validation
 validators.validateOrder = (data) => {

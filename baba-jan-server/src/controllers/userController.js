@@ -6,7 +6,65 @@ const { validateRegistration, validateLogin, validatePasswordReset } = require('
 const userController = {};
 
 // ==================== USER MANAGEMENT ====================
+// Admin Registration (Super Admin only)
+userController.registerAdmin = async (req, res) => {
+  const { error } = validateRegistration(req.body);
+  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
+  try {
+    const { email, phone, password } = req.body;
+
+    // Check if admin user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'Email already in use.' });
+    }
+
+    // Ensure only super-admins can create admin users
+    if (req.user.role !== 'super-admin') {
+      return res.status(403).json({ success: false, message: 'Only super-admins can register new admins.' });
+    }
+
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const admin = new User({
+      ...req.body,
+      password: hashedPassword,
+      role: 'admin', // Enforce admin role
+    });
+
+    await admin.save();
+    res.status(201).json({ success: true, message: 'Admin registered successfully.', data: admin });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
+
+// Admin Login
+userController.loginAdmin = async (req, res) => {
+  const { error } = validateLogin(req.body);
+  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
+
+  try {
+    const { email, password } = req.body;
+
+    // Find admin by email
+    const admin = await User.findOne({ email, role: { $in: ['admin', 'super-admin'] } }).select('+password');
+    if (!admin) return res.status(404).json({ success: false, message: 'Invalid email or password.' });
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid email or password.' });
+
+    // Generate JWT
+    const token = jwt.sign({ id: admin._id, role: admin.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
+    res.status(200).json({ success: true, token, user: { id: admin._id, email: admin.email, role: admin.role } });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
 // 1. Register a new user
 userController.registerUser = async (req, res) => {
   const { error } = validateRegistration(req.body);
@@ -75,21 +133,27 @@ userController.getUserProfile = async (req, res) => {
 };
 
 // 4. Update user profile
-userController.updateUserProfile = async (req, res) => {
+userController.updateUserProfile  = async (req, res) => {
+  const { userId } = req.params;
+  console.log('Received userId:', userId);
+
   try {
-    const { name, phone, address } = req.body;
+    // Log the query result
+    const user = await User.findById(userId);
+    console.log('Found user:', user);
 
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user._id,
-      { $set: { name, phone, address } },
-      { new: true }
-    ).select('-password');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
 
-    if (!updatedUser) return res.status(404).json({ success: false, message: 'User not found.' });
+    // Proceed with updates
+    Object.assign(user, req.body);
+    await user.save();
 
-    res.status(200).json({ success: true, data: updatedUser });
+    res.status(200).json({ success: true, message: 'User updated successfully.', data: user });
   } catch (err) {
-    handleError(res, err);
+    console.error('Error finding or updating user:', err.message);
+    res.status(500).json({ success: false, message: 'An error occurred.' });
   }
 };
 

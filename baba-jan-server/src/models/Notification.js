@@ -13,7 +13,7 @@ const NotificationSchema = new mongoose.Schema(
       required: true,
       enum: [
         'order',
-        'promotion',
+        'promo',
         'system',
         'custom',
         'reminder',

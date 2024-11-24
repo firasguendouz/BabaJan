@@ -1,12 +1,19 @@
 const express = require('express');
 const adminController = require('../controllers/adminController');
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
+const userController = require('../controllers/userController');
 
 const router = express.Router();
+// Admin Registration (Super Admin only)
+router.post('/register', verifyToken, verifyAdmin, userController.registerAdmin);
+
+// Admin Login
+router.post('/login', userController.loginAdmin);
 
 // User Management
 router.get('/users', verifyToken, verifyAdmin, adminController.getAllUsers); // Get all users
 router.delete('/users/:userId', verifyToken, verifyAdmin, adminController.deleteUser); // Delete a user
+router.patch('/users/:userId', verifyToken, verifyAdmin, userController.updateUserProfile);
 
 // Order Management
 router.get('/orders', verifyToken, verifyAdmin, adminController.getAllOrders); // Get all orders

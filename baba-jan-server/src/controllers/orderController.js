@@ -131,13 +131,17 @@ orderController.getUserOrders = async (req, res) => {
 // 3. Fetch order details by ID
 orderController.getOrderDetails = async (req, res) => {
   const { orderId } = req.params;
+
   try {
-    const order = await Order.findOne({ _id: orderId, userId: req.user._id, isDeleted: false });
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found.' });
+    const order = await Order.findById(orderId).populate('userId', 'name email');
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
 
     res.status(200).json({ success: true, data: order });
   } catch (err) {
-    handleError(res, err);
+    console.error('Error fetching order details:', err);
+    res.status(500).json({ success: false, message: 'An error occurred.', error: err.message });
   }
 };
 
@@ -173,42 +177,82 @@ orderController.cancelOrder = async (req, res) => {
 // ==================== ORDER STATUS AND HISTORY ====================
 
 // 5. Update order status (Admin or staff only)
-orderController.updateOrderStatus = async (req, res) => {
-  const { orderId, status } = req.body;
+// Update specific order details
+orderController.updateOrderDetails = async (req, res) => {
+  const { orderId } = req.params;
+  const { items, paymentDetails, status, deliveryInfo, discountAmount } = req.body;
+
   try {
-    const validStatuses = ['pending', 'confirmed', 'prepared', 'shipped', 'delivered', 'cancelled'];
-    if (!validStatuses.includes(status)) {
-      return res.status(400).json({ success: false, message: 'Invalid status value.' });
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
     }
 
-    const order = await Order.findById(orderId);
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found.' });
+    // Update payment details
+    if (paymentDetails) {
+      const { method, transactionId, paidAt } = paymentDetails;
+      order.paymentDetails = {
+        method: method || order.paymentDetails.method,
+        transactionId: transactionId || order.paymentDetails.transactionId,
+        paidAt: paidAt || order.paymentDetails.paidAt,
+      };
+    }
 
-    order.status = status;
-    order.statusHistory.push({ status, timestamp: new Date() });
+    // Update items
+    if (items) {
+      order.items = items.map((item) => {
+        if (!item.itemId || !item.price || !item.quantity) {
+          throw new Error('Each item must include itemId, price, and quantity.');
+        }
+
+        return {
+          ...item,
+          total: item.price * item.quantity,
+        };
+      });
+    }
+
+    // Update status
+    if (status) {
+      const validStatuses = ['pending', 'confirmed', 'prepared', 'shipped', 'delivered', 'cancelled'];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({ success: false, message: 'Invalid status value.' });
+      }
+      order.status = status;
+      order.statusHistory.push({ status, timestamp: new Date() });
+    }
+
+    // Update delivery information
+    if (deliveryInfo) {
+      order.deliveryInfo = { ...order.deliveryInfo, ...deliveryInfo };
+    }
+
+    // Update discount amount
+    if (discountAmount !== undefined) {
+      if (discountAmount < 0) {
+        return res.status(400).json({ success: false, message: 'Discount amount cannot be negative.' });
+      }
+      order.discountAmount = discountAmount;
+    }
+
+    // Recalculate totals and item count
+    order.totalAmount = order.items.reduce((sum, item) => sum + item.total, 0);
+    order.finalAmount = order.totalAmount + order.taxAmount - order.discountAmount;
+    order.itemsCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
+
     await order.save();
 
-    // Log the update in the audit log
-    await OrderAudit.create({
-      orderId,
-      adminId: req.user._id,
-      action: 'Status Updated',
-      details: `Order status updated to ${status}`,
-    });
-
-    // Notify the user
-    await Notification.create({
-      recipient: order.userId,
-      type: 'order',
-      title: 'Order Status Updated',
-      message: `Your order #${orderId} is now ${status}.`,
-    });
-
-    res.status(200).json({ success: true, message: 'Order status updated successfully.' });
+    res.status(200).json({ success: true, message: 'Order updated successfully.', data: order });
   } catch (err) {
-    handleError(res, err);
+    console.error('Error updating order details:', err);
+    res.status(500).json({ success: false, message: 'An error occurred.', error: err.message });
   }
 };
+
+
+
+
+
 
 // 6. Fetch all orders (Admin or staff only)
 orderController.getAllOrders = async (req, res) => {

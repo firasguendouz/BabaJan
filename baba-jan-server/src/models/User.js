@@ -30,18 +30,16 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       minlength: 6,
       select: false,
+      required: function () {
+        return this.isNew;
+      },
     },
     role: {
       type: String,
       enum: ['user', 'admin', 'super-admin'],
       default: 'user',
-    },
-    permissions: {
-      type: [String],
-      default: [],
     },
     address: [
       {
@@ -59,9 +57,6 @@ const UserSchema = new mongoose.Schema(
       },
     ],
     loginAttempts: { type: Number, default: 0 },
-    lockUntil: { type: Date },
-    resetPasswordToken: { type: String },
-    resetPasswordExpires: { type: Date },
     orderHistory: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -70,11 +65,6 @@ const UserSchema = new mongoose.Schema(
     ],
     orderCount: { type: Number, default: 0 },
     lastOrderDate: { type: Date },
-    preferences: {
-      type: Map,
-      of: String,
-      default: {},
-    },
     isActive: { type: Boolean, default: true },
     isDeleted: { type: Boolean, default: false },
     deletedAt: { type: Date },
