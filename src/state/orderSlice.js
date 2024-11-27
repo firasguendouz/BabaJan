@@ -1,30 +1,34 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  orders: [],
-  loading: false,
-  error: null,
-};
+import axios from 'axios';
+
+export const createOrder = createAsyncThunk(
+  'orders/createOrder',
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/orders', orderData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const orderSlice = createSlice({
   name: 'orders',
-  initialState,
-  reducers: {
-    fetchOrdersStart(state) {
-      state.loading = true;
-      state.error = null;
-    },
-    fetchOrdersSuccess(state, action) {
-      state.orders = action.payload;
-      state.loading = false;
-    },
-    fetchOrdersFailure(state, action) {
-      state.error = action.payload;
-      state.loading = false;
-    },
+  initialState: { orders: [], status: null, error: null },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.orders.push(action.payload);
+        state.status = 'success';
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.error = action.payload;
+        state.status = 'failed';
+      });
   },
 });
-
-export const { fetchOrdersStart, fetchOrdersSuccess, fetchOrdersFailure } = orderSlice.actions;
 
 export default orderSlice.reducer;

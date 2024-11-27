@@ -5,10 +5,10 @@ const { verifyToken, verifyAdmin } = require('../middleware/auth');
 
 
 // Get all promotions
-router.get('/', verifyToken, promotionController.getAllPromotions);
+router.get('/',  promotionController.getAllPromotions);
 
 // Get active promotions
-router.get('/active', verifyToken, promotionController.getActivePromotions);
+router.get('/active',  promotionController.getActivePromotions);
 
 // Get a promotion by ID
 router.get('/:id', verifyToken, promotionController.getPromotionById);

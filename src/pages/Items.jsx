@@ -5,10 +5,11 @@ import ItemList from '../components/item/ItemList';
 import axios from 'axios';
 
 const ItemsPage = () => {
-  const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -16,14 +17,17 @@ const ItemsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const itemsResponse = await axios.get('http://localhost:5000/api/items');
-        const categoriesResponse = await axios.get('http://localhost:5000/api/categories');
+        const [categoriesResponse, itemsResponse] = await Promise.all([
+          axios.get('http://localhost:5000/api/categories'),
+          axios.get('http://localhost:5000/api/items'),
+        ]);
 
-        setItems(itemsResponse.data.data);
-        setCategories(categoriesResponse.data.data);
-        setFilteredItems(itemsResponse.data.data);
+        setCategories(categoriesResponse.data.data || []);
+        setItems(itemsResponse.data.data || []);
+        setFilteredItems(itemsResponse.data.data || []);
       } catch (err) {
-        setError('Error fetching data. Please try again later.');
+        setError('Failed to load data. Please try again later.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -32,17 +36,28 @@ const ItemsPage = () => {
     fetchData();
   }, []);
 
-  // Filter items when category changes
+  // Filter items based on selected category or subcategory
   useEffect(() => {
-    if (selectedCategory) {
-      setFilteredItems(items.filter((item) => item.category === selectedCategory));
+    if (selectedSubcategory) {
+      setFilteredItems(
+        items.filter((item) => item.subcategory === selectedSubcategory)
+      );
+    } else if (selectedCategory) {
+      setFilteredItems(
+        items.filter((item) => item.category === selectedCategory)
+      );
     } else {
       setFilteredItems(items);
     }
-  }, [selectedCategory, items]);
+  }, [selectedCategory, selectedSubcategory, items]);
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category._id);
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setSelectedSubcategory(null); // Reset subcategory when category is selected
+  };
+
+  const handleSubcategoryClick = (subcategoryId) => {
+    setSelectedSubcategory(subcategoryId);
   };
 
   if (loading) return <div>Loading items...</div>;
@@ -50,16 +65,38 @@ const ItemsPage = () => {
 
   return (
     <div>
-      <h1>Our Products</h1>
+      <h1>
+        {selectedSubcategory
+          ? `Products in ${categories
+              .flatMap((cat) => cat.subcategories)
+              .find((sub) => sub._id === selectedSubcategory)?.name || 'Subcategory'}`
+          : selectedCategory
+          ? `Products in ${categories.find((cat) => cat._id === selectedCategory)?.title || 'Category'}`
+          : 'Our Products'}
+      </h1>
 
-      {/* Horizontal menu for categories */}
+      {/* Horizontal menu for categories and subcategories */}
       <HorizontalMenu
-        categories={categories.map((cat) => ({ _id: cat._id, title: cat.title }))}
-        onCategoryClick={(category) => handleCategoryClick(category)}
+        categories={categories.map((cat) => ({
+          ...cat,
+          subcategories: cat.subcategories.map((sub) => ({
+            _id: sub._id,
+            name: sub.name,
+          })),
+        }))}
+        onCategoryClick={handleCategoryClick}
+        onSubcategoryClick={handleSubcategoryClick}
       />
 
       {/* Item list */}
-      <ItemList items={filteredItems} onItemClick={(id) => console.log(`Clicked item: ${id}`)} />
+      {filteredItems.length > 0 ? (
+        <ItemList
+          items={filteredItems}
+          onItemClick={(id) => console.log(`Clicked item: ${id}`)}
+        />
+      ) : (
+        <div>No items found in this category or subcategory.</div>
+      )}
     </div>
   );
 };

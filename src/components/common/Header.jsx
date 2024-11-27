@@ -24,9 +24,10 @@ const Header = ({ title, links }) => {
 
   return (
     <header className="app-header">
-      <div className="header-brand">
-        <h1>{title}</h1>
-      </div>
+      <div href='/' className="header-brand">
+      <a href="/" className="brand-link">
+          <h1>{title}</h1>
+        </a>      </div>
       <nav className="header-nav">
         <ul className="nav-links">
           {links.map((link, index) => (
@@ -40,7 +41,7 @@ const Header = ({ title, links }) => {
             ☰
           </button>
           <button onClick={handleBasketClick} className="basket-button">
-            🛒 Basket
+            🛒
             {getCartItemCount() > 0 && (
               <span className="item-count-badge">{getCartItemCount()}</span>
             )}

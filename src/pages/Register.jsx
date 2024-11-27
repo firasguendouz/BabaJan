@@ -1,39 +1,110 @@
-import './Register.css';
+import React, { useState } from 'react';
 
-import React from 'react';
-import RegisterForm from '../components/user/RegisterForm';
-import { registerUser } from '../api/userApi'; // Import the API function
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { register } from '../state/userSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 
 const Register = () => {
-  const navigate = useNavigate(); // Initialize the navigate function
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize navigate for redirection
 
-  const handleRegister = async (formData) => {
-    try {
-      // Make the API call
-      const response = await registerUser(formData);
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-      // Handle successful registration
-      console.log('User registered successfully:', response.data);
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      // Redirect to login page after registration
-      navigate('/login');
-    } catch (error) {
-      console.error('Registration failed:', error.response?.data || error.message);
-
-      // Display user-friendly error message
-      alert(error.response?.data?.message || 'An error occurred during registration.');
+    // Validate password confirmation
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
     }
+
+    // Dispatch registration action
+    dispatch(
+      register({
+        name: { firstName: formData.firstName, lastName: formData.lastName },
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        alert('Registration successful!');
+        navigate('/login'); // Redirect to login page
+      })
+      .catch((err) => {
+        console.error('Registration failed:', err);
+        alert('Registration failed. Please try again.');
+      });
   };
 
   return (
-    <div className="register-page">
-      <div className="register-container">
-        <h1>Create an Account</h1>
-        <p>Sign up to start shopping and enjoy our fresh produce.</p>
-        <RegisterForm onSubmit={handleRegister} />
-      </div>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h1>Register</h1>
+      <input
+        type="text"
+        name="firstName"
+        placeholder="First Name"
+        value={formData.firstName}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="text"
+        name="lastName"
+        placeholder="Last Name"
+        value={formData.lastName}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="text"
+        name="phone"
+        placeholder="Phone (e.g., +491234567890)"
+        value={formData.phone}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="password"
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        value={formData.confirmPassword}
+        onChange={handleInputChange}
+        required
+      />
+      <button type="submit">Register</button>
+    </form>
   );
 };
 

@@ -1,85 +1,59 @@
 .horizontal-menu {
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .scroll-container {
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    flex-grow: 1;
-  }
-  
-  .scroll-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-  
-  .tabs {
-    display: flex;
-    gap: 8px;
-    padding: 8px 16px;
-    white-space: nowrap;
-  }
-  
-  .tab {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    color: #555;
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-  
-  .tab:hover,
-  .tab:focus {
-    background-color: #f0f0f0;
-    color: #000;
-  }
-  
-  .tab[aria-selected='true'] {
-    color: #fff;
-    background-color: #007bff;
-  }
-  
-  .scroll-arrow {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    z-index: 10;
-    height: 100%;
-  }
-  
-  .left-arrow {
-    left: 0;
-  }
-  
-  .right-arrow {
-    right: 0;
-  }
-  
-  .scroll-arrow.hidden {
-    display: none;
-  }
-  
-  .scroll-arrow .icon {
-    color: #333;
-    width: 24px;
-    height: 24px;
-  }
-  
-  .scroll-arrow:hover .icon {
-    color: #007bff;
-  }
-  
+  margin: 20px 0;
+}
+
+.category-menu,
+.subcategory-menu {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+.scroll-arrow {
+  background-color: #007b55;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-arrow.hidden {
+  visibility: hidden;
+}
+
+.category-tab,
+.subcategory-tab {
+  background-color: white;
+  color: #007b55;
+  border: 1px solid #007b55;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-tab.active,
+.subcategory-tab.active {
+  background-color: #007b55;
+  color: white;
+}
+
+.category-tab:hover,
+.subcategory-tab:hover {
+  background-color: #005c41;
+  color: white;
+}

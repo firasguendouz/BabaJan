@@ -31,7 +31,7 @@ const ItemCard = ({ item }) => {
   return (
     <div className="product-card">
       <div className="product-card-thumbnail">
-        {item.discount && <div className="product-card-discount">-{item.discount}%</div>}
+        {item.discount && <div className="product-card-discount">-{item.discount}%</div> || ''}
         <img
           src={item.imageUrl || '/placeholder.jpg'}
           alt={item.name || 'Product'}

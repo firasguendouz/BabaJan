@@ -1,7 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 
-import AdminDashboard from '../pages/AdminDashboard';
-import AdminRoute from './AdminRoute';
 import Basket from '../pages/Basket';
 import Home from '../pages/Home';
 import Items from '../pages/Items';
@@ -18,13 +16,12 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/basket" element={<Basket />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/basket" element={<Basket />} />
+      <Route path="/items" element={<Items />} />
       <Route path="/profile" element={<PrivateRoute component={Profile} />} />
       <Route path="/orders" element={<PrivateRoute component={Orders} />} />
       <Route path="/orders/:orderId" element={<PrivateRoute component={OrderDetailsPage} />} />
-      <Route path="/items" element={<Items />} />
-      <Route path="/admin" element={<AdminRoute component={AdminDashboard} />} />
     </Routes>
   );
 };
