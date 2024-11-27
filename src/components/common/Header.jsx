@@ -1,79 +1,59 @@
 import './Header.css';
 
-import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux'; // Use Redux selector for cart
+import React from 'react';
+import { logout } from '../../state/userSlice'; // Redux logout action
 
-const Header = ({ title, links }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+const Header = () => {
   const navigate = useNavigate();
-  const cart = useSelector((state) => state.cart || []); // Get cart from Redux store
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector((state) => state.user);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
   };
-
-  const handleBasketClick = () => {
-    navigate('/basket');
-  };
-
-  const getCartItemCount = () =>
-    cart.reduce((totalCount, item) => totalCount + (item.quantity || 0), 0); // Calculate total quantity
 
   return (
     <header className="app-header">
-      <div href='/' className="header-brand">
-      <a href="/" className="brand-link">
-          <h1>{title}</h1>
-        </a>      </div>
+      <div className="header-brand">
+        <Link to="/">
+          <h1>Baba Jan</h1>
+        </Link>
+      </div>
       <nav className="header-nav">
         <ul className="nav-links">
-          {links.map((link, index) => (
-            <li key={index}>
-              <a href={link.href}>{link.label}</a>
-            </li>
-          ))}
-        </ul>
-        <div className="header-actions">
-          <button onClick={toggleMenu} className="menu-button">
-            ☰
-          </button>
-          <button onClick={handleBasketClick} className="basket-button">
-            🛒
-            {getCartItemCount() > 0 && (
-              <span className="item-count-badge">{getCartItemCount()}</span>
-            )}
-          </button>
-        </div>
-      </nav>
-      {menuOpen && (
-        <div className="menu-modal">
-          <ul>
-            {links.map((link, index) => (
-              <li key={index}>
-                <a href={link.href}>{link.label}</a>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/items">Shop</Link>
+          </li>
+          <li>
+            <Link to="/basket">Basket</Link>
+          </li>
+          {isAuthenticated ? (
+            <>
+              <li>
+                <Link to="/profile">Profile</Link>
               </li>
-            ))}
-          </ul>
-          <button onClick={toggleMenu} className="close-menu-button">
-            Close
-          </button>
-        </div>
-      )}
+              <li>
+                <button className="logout-button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          )}
+        </ul>
+      </nav>
     </header>
   );
-};
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-  links: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      href: PropTypes.string.isRequired,
-    })
-  ).isRequired,
 };
 
 export default Header;

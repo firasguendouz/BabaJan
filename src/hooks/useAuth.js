@@ -1,12 +1,21 @@
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { logout } from '../state/userSlice'; // Import the logout action
 
 const useAuth = () => {
-  const { user, token, login, logout } = useContext(AuthContext);
+  const user = useSelector((state) => state.user.user);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const dispatch = useDispatch();
 
-  const isAuthenticated = () => !!token;
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
-  return { user, token, isAuthenticated, login, logout };
+  return {
+    user,
+    isAuthenticated,
+    logout: handleLogout,
+  };
 };
 
 export default useAuth;
