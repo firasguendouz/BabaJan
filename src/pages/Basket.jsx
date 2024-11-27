@@ -1,8 +1,16 @@
+import './Basket.css';
+
+import { clearCart, removeFromCart } from '../state/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 import React from 'react';
-import { useCart } from '../context/CartContext';
 
 const Basket = () => {
-  const { cart, removeFromCart, clearCart, getCartTotal } = useCart();
+  const cart = useSelector((state) => state.cart || []); // Fetch cart from Redux
+  const dispatch = useDispatch();
+
+  const getCartTotal = () =>
+    cart.reduce((total, item) => total + item.quantity * item.price, 0);
 
   return (
     <div className="basket-page">
@@ -15,14 +23,16 @@ const Basket = () => {
             {cart.map((item) => (
               <li key={item.id}>
                 <span>
-                  {item.name} - {item.quantity} grams x ${item.price.toFixed(2)} per kg
+                  {item.name} - {item.quantity} pcs x €{item.price.toFixed(2)} per unit
                 </span>
-                <button onClick={() => removeFromCart(item.id)}>Remove</button>
+                <button onClick={() => dispatch(removeFromCart(item.id))}>Remove</button>
               </li>
             ))}
           </ul>
-          <p>Total: ${getCartTotal().toFixed(2)}</p> {/* Show total price */}
-          <button onClick={clearCart}>Clear Basket</button>
+          <p>
+            <strong>Total:</strong> €{getCartTotal().toFixed(2)}
+          </p>
+          <button onClick={() => dispatch(clearCart())}>Clear Basket</button>
         </>
       )}
     </div>
