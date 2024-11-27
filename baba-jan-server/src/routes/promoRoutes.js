@@ -1,17 +1,23 @@
 const express = require('express');
+const router = express.Router();
 const promotionController = require('../controllers/promoController');
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
 
-const router = express.Router();
 
-// Public Routes
-router.get('/', promotionController.getAllPromotions); // Get all promotions
+// Get all promotions
+router.get('/', verifyToken, promotionController.getAllPromotions);
 
-// Admin Routes
-router.post('/', verifyToken, verifyAdmin, promotionController.createPromotion); // Create a new promotion
-router.get('/:promoId', verifyToken, verifyAdmin, promotionController.getPromotionById); // Get promotion by ID
-router.put('/:promoId', verifyToken, verifyAdmin, promotionController.updatePromotion);
-router.delete('/:promoId', verifyToken, verifyAdmin, promotionController.deletePromotion); // Delete a promotion
-router.patch('/:promoId/status', verifyToken, verifyAdmin, promotionController.togglePromotionStatus); // Toggle promotion status
+// Get active promotions
+router.get('/active', verifyToken, promotionController.getActivePromotions);
+
+// Get a promotion by ID
+router.get('/:id', verifyToken, promotionController.getPromotionById);
+
+
+// Increment promotion usage
+router.patch('/:id/usage', verifyToken, promotionController.incrementUsage);
+
+// Get promotions by tag
+router.get('/tag/:tag', verifyToken, promotionController.getPromotionsByTag);
 
 module.exports = router;

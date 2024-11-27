@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Order = require('../models/Order');
+const Category = require('../models/Category');
 const Item = require('../models/Item');
 const Promotion = require('../models/Promotion');
 const Notification = require('../models/Notification');

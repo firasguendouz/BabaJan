@@ -4,14 +4,13 @@ const { verifyToken, verifyAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Authenticated user's routes
-router.get('/', verifyToken, notificationController.getAuthenticatedUserNotifications); // Get own notifications
-router.patch('/:notificationId/read', verifyToken, notificationController.markAsRead); // Mark one as read
-router.patch('/read-all', verifyToken, notificationController.markAllAsRead); // Mark all as read
+router.get('/', verifyToken, notificationController.getAuthenticatedUserNotifications);
+router.patch('/:notificationId/read', verifyToken, notificationController.markAsRead);
+router.patch('/read-all', verifyToken, notificationController.markAllAsRead);
 router.delete('/:notificationId', verifyToken, notificationController.deleteNotification);
 
-// Admin/Super Admin routes
-router.get('/user/:recipientId', verifyToken, verifyAdmin, notificationController.getUserNotifications); // Get specified user's notifications
-router.post('/', verifyToken, verifyAdmin, notificationController.createNotification); // Create a notification
+// Admin-only Routes
+router.get('/user/:recipientId', verifyToken, verifyAdmin, notificationController.getUserNotifications);
+router.post('/', verifyToken, verifyAdmin, notificationController.createNotification);
 
 module.exports = router;

@@ -1,0 +1,85 @@
+.horizontal-menu {
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    flex-grow: 1;
+  }
+  
+  .scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  .tabs {
+    display: flex;
+    gap: 8px;
+    padding: 8px 16px;
+    white-space: nowrap;
+  }
+  
+  .tab {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #555;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  .tab:hover,
+  .tab:focus {
+    background-color: #f0f0f0;
+    color: #000;
+  }
+  
+  .tab[aria-selected='true'] {
+    color: #fff;
+    background-color: #007bff;
+  }
+  
+  .scroll-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 10;
+    height: 100%;
+  }
+  
+  .left-arrow {
+    left: 0;
+  }
+  
+  .right-arrow {
+    right: 0;
+  }
+  
+  .scroll-arrow.hidden {
+    display: none;
+  }
+  
+  .scroll-arrow .icon {
+    color: #333;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .scroll-arrow:hover .icon {
+    color: #007bff;
+  }
+  

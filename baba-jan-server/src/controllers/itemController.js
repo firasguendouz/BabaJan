@@ -1,173 +1,183 @@
-const Item = require('../models/Item');
-const validators = require('../utils/validators'); // Validation utility
-const helpers = require('../utils/helpers'); // Utility functions
+const Category = require('../models/Category');
 const { handleError } = require('../middleware/errorHandler'); // Error handler
+// Make sure you import the Item model
+const Item = require('../models/Item'); // Adjust the path as needed
 
 const itemController = {};
 
-// Create a new item
-itemController.createItem = async (req, res) => {
+// Add a product to a subcategory
+itemController.addProduct = async (req, res) => {
   try {
-    // Validate incoming data
-    const { error } = validators.validateItem(req.body);
-    if (error) {
-      return res.status(400).json({ success: false, message: error.details[0].message });
+    const { categoryId, subcategoryId } = req.params;
+    const productData = req.body;
+
+    // Find the category
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({ success: false, message: 'Category not found.' });
     }
 
-    // Ensure no unexpected fields are included
-    if (req.body.variations) {
-      return res.status(400).json({ success: false, message: '`variations` field is not allowed.' });
+    // Find the subcategory
+    const subcategory = category.subcategories.id(subcategoryId);
+    if (!subcategory) {
+      return res.status(404).json({ success: false, message: 'Subcategory not found.' });
     }
 
-    // Check for duplicate item based on unique fields if necessary (e.g., name and category)
-    const duplicateItem = await Item.findOne({
-      'name.en': req.body.name.en,
-      category: req.body.category,
-    });
-    if (duplicateItem) {
-      return res.status(400).json({
-        success: false,
-        message: `An item with the name "${req.body.name.en}" in category "${req.body.category}" already exists.`,
+    // Create the product (or find it if it already exists)
+    let product = await Item.findOne({ sku: productData.sku });
+    if (!product) {
+      // If product doesn't exist, create a new product
+      product = new Item({
+        sku: productData.sku,
+        name: productData.name,
+        slug: productData.slug,
+        quantity: productData.quantity,
+        thumbnail: productData.thumbnail,
+        price: productData.price,
+        category: categoryId, // Reference to the current category
+        categoryName: category.title, // Add the category name here
+        subcategory: subcategoryId, // Reference to the current subcategory
+        subcategoryName: subcategory.name, // Add the subcategory name here
       });
+
+      // Save the new product
+      await product.save();
     }
 
-    // Create a new item
-    const newItem = new Item(req.body);
-    await newItem.save();
+    // Add the product's ObjectId to the subcategory's products array
+    subcategory.products.push(product._id);
+    await category.save();
 
     res.status(201).json({
       success: true,
-      message: 'Item created successfully.',
-      data: newItem,
+      message: 'Product added successfully.',
+      data: product,
     });
   } catch (err) {
-    console.error('Error creating item:', err.message);
+    console.error('Error adding product:', err.message);
     handleError(res, err);
   }
 };
 
-// Get all items with filters and pagination
-itemController.getAllItems = async (req, res) => {
-  try {
-    const { category, available, search, page = 1, limit = 10 } = req.query;
 
-    const filters = { isDeleted: false };
-    if (category) filters.category = category;
-    if (available !== undefined) filters.available = available === 'true';
-    if (search) {
-      const regex = new RegExp(search, 'i'); // Case-insensitive search
-      filters.$or = [
-        { 'name.en': regex },
-        { 'name.de': regex },
-        { category: regex },
-        { 'description.en': regex },
-        { 'description.de': regex },
-      ];
+
+
+// Get all products from a subcategory
+itemController.getAllProducts = async (req, res) => {
+  try {
+    const products = await Item.find(); // Fetch all items
+    res.status(200).json({ success: true, data: products });
+  } catch (err) {
+    console.error('Error fetching products:', err.message);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+
+// Get a single product by ID
+itemController.getProductById = async (req, res) => {
+  try {
+    const { categoryId, subcategoryId, productId } = req.params;
+
+    // Find the category
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({ success: false, message: 'Category not found.' });
     }
 
-    let query = Item.find(filters);
-    query = helpers.paginate(query, page, limit);
+    // Find the subcategory
+    const subcategory = category.subcategories.id(subcategoryId);
+    if (!subcategory) {
+      return res.status(404).json({ success: false, message: 'Subcategory not found.' });
+    }
 
-    const items = await query.exec();
-    const totalCount = await Item.countDocuments(filters);
+    // Find the product
+    const product = subcategory.products.id(productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found.' });
+    }
 
     res.status(200).json({
       success: true,
-      data: items,
-      meta: { total: totalCount, page, limit },
+      data: product,
     });
   } catch (err) {
-    console.error('Error fetching items:', err.message);
+    console.error('Error fetching product by ID:', err.message);
     handleError(res, err);
   }
 };
 
-// Get a single item by ID
-itemController.getItemById = async (req, res) => {
+// Update a product by ID
+itemController.updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { categoryId, subcategoryId, productId } = req.params;
+    const updates = req.body;
 
-    if (!helpers.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: 'Invalid item ID.' });
+    // Find the category
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({ success: false, message: 'Category not found.' });
     }
 
-    const item = await Item.findById(id);
-    if (!item || item.isDeleted) {
-      return res.status(404).json({ success: false, message: 'Item not found.' });
+    // Find the subcategory
+    const subcategory = category.subcategories.id(subcategoryId);
+    if (!subcategory) {
+      return res.status(404).json({ success: false, message: 'Subcategory not found.' });
     }
 
-    res.status(200).json({ success: true, data: item });
+    // Find the product
+    const product = subcategory.products.id(productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found.' });
+    }
+
+    // Update the product
+    Object.assign(product, updates);
+    await category.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully.',
+      data: product,
+    });
   } catch (err) {
-    console.error('Error fetching item by ID:', err.message);
+    console.error('Error updating product:', err.message);
     handleError(res, err);
   }
 };
 
-// Update an existing item
-itemController.updateItem = async (req, res) => {
+// Delete a product by ID
+itemController.deleteProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { categoryId, subcategoryId, productId } = req.params;
 
-    if (!helpers.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: 'Invalid item ID.' });
+    // Find the category
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({ success: false, message: 'Category not found.' });
     }
 
-    const { error } = validators.validateItem(req.body);
-    if (error) {
-      return res.status(400).json({ success: false, message: error.details[0].message });
+    // Find the subcategory
+    const subcategory = category.subcategories.id(subcategoryId);
+    if (!subcategory) {
+      return res.status(404).json({ success: false, message: 'Subcategory not found.' });
     }
 
-    const updatedItem = await Item.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-    if (!updatedItem || updatedItem.isDeleted) {
-      return res.status(404).json({ success: false, message: 'Item not found or deleted.' });
+    // Find and remove the product
+    const product = subcategory.products.id(productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found.' });
     }
 
-    res.status(200).json({ success: true, message: 'Item updated successfully.', data: updatedItem });
+    product.remove();
+    await category.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully.',
+    });
   } catch (err) {
-    console.error('Error updating item:', err.message);
-    handleError(res, err);
-  }
-};
-
-// Soft delete an item
-itemController.deleteItem = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (!helpers.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: 'Invalid item ID.' });
-    }
-
-    const item = await Item.findById(id);
-    if (!item || item.isDeleted) {
-      return res.status(404).json({ success: false, message: 'Item not found.' });
-    }
-
-    await item.softDelete();
-    res.status(200).json({ success: true, message: 'Item deleted successfully.' });
-  } catch (err) {
-    console.error('Error deleting item:', err.message);
-    handleError(res, err);
-  }
-};
-
-// Restore a soft-deleted item
-itemController.restoreItem = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (!helpers.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: 'Invalid item ID.' });
-    }
-
-    const item = await Item.findByIdAndUpdate(id, { isDeleted: false }, { new: true });
-    if (!item) {
-      return res.status(404).json({ success: false, message: 'Item not found.' });
-    }
-
-    res.status(200).json({ success: true, message: 'Item restored successfully.', data: item });
-  } catch (err) {
-    console.error('Error restoring item:', err.message);
+    console.error('Error deleting product:', err.message);
     handleError(res, err);
   }
 };

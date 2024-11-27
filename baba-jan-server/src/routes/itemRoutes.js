@@ -1,25 +1,15 @@
 const express = require('express');
-const itemController = require('../controllers/itemController');
-const { verifyToken, verifyAdmin } = require('../middleware/auth'); // Authentication middlewares
-
 const router = express.Router();
+const itemController = require('../controllers/itemController');
+const { verifyToken, verifyAdmin } = require('../middleware/auth');
 
-// Create a new item (Admin only)
-router.post('/', verifyToken, verifyAdmin, itemController.createItem);
+// Add a product (Admin only)
+router.post('/:categoryId/:subcategoryId', verifyToken, verifyAdmin, itemController.addProduct);
+router.get('/',   itemController.getAllProducts);
 
-// Get all items (Public)
-router.get('/', itemController.getAllItems);
-
-// Get a single item by ID (Public)
-router.get('/:id', itemController.getItemById);
-
-// Update an item (Admin only)
-router.put('/:id', verifyToken, verifyAdmin, itemController.updateItem);
-
-// Soft delete an item (Admin only)
-router.delete('/:id', verifyToken, verifyAdmin, itemController.deleteItem);
-
-// Restore a soft-deleted item (Admin only)
-router.patch('/:id/restore', verifyToken, verifyAdmin, itemController.restoreItem);
+// Manage a product by ID
+router.get('/:categoryId/:subcategoryId/:productId', verifyToken, itemController.getProductById);
+router.patch('/:categoryId/:subcategoryId/:productId', verifyToken, verifyAdmin, itemController.updateProduct);
+router.delete('/:categoryId/:subcategoryId/:productId', verifyToken, verifyAdmin, itemController.deleteProduct);
 
 module.exports = router;

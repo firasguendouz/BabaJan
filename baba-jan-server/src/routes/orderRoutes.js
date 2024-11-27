@@ -1,17 +1,27 @@
 const express = require('express');
-const orderController = require('../controllers/orderController');
-const { verifyToken } = require('../middleware/auth');
-
 const router = express.Router();
+const orderController = require('../controllers/orderController');
+const { verifyToken, verifyAdmin } = require('../middleware/auth');
 
-// User Routes
-router.post('/', verifyToken, orderController.placeOrder); // Place a new order
-router.get('/', verifyToken, orderController.getUserOrders); // Get user-specific orders
-router.get('/:orderId', verifyToken, orderController.getOrderDetails); // Get order details by ID
-router.patch('/:orderId/cancel', verifyToken, orderController.cancelOrder); // Cancel an order
+// Create an order
+router.post('/', verifyToken, orderController.createOrder);
 
-// Admin Routes
-router.get('/admin/:orderId', verifyToken, orderController.getOrderDetails); // Fetch order details
-router.patch('/admin/:orderId', verifyToken, orderController.updateOrderDetails); // Update order details
+// Get all orders (Admin only)
+router.get('/', verifyToken, verifyAdmin, orderController.getAllOrders);
+
+// Get a specific order by ID
+router.get('/:id', verifyToken, orderController.getOrderById);
+
+// Update order status (Admin only)
+router.patch('/:id/status', verifyToken, verifyAdmin, orderController.updateOrderStatus);
+
+// Add an event to an order (Admin only)
+router.post('/:id/events', verifyToken, verifyAdmin, orderController.addOrderEvent);
+
+// Soft delete an order (Admin only)
+router.delete('/:id', verifyToken, verifyAdmin, orderController.deleteOrder);
+
+// Restore a soft-deleted order (Admin only)
+router.patch('/:id/restore', verifyToken, verifyAdmin, orderController.restoreOrder);
 
 module.exports = router;

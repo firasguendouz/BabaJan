@@ -15,7 +15,12 @@ const UserSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true,
-      
+      validate: {
+        validator: function (email) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // Simple email regex
+        },
+        message: 'Invalid email format.',
+      },
     },
     phone: {
       type: String,
@@ -23,9 +28,9 @@ const UserSchema = new mongoose.Schema(
       unique: true,
       validate: {
         validator: function (phone) {
-          return /^\+49\d{10}$/.test(phone);
+          return /^\+49\d{10}$/.test(phone); // Validates German phone numbers starting with +49
         },
-        message: 'Invalid German phone number (must start with +49)',
+        message: 'Invalid German phone number (must start with +49 and have 10 digits after).',
       },
     },
     password: {
@@ -57,6 +62,7 @@ const UserSchema = new mongoose.Schema(
       },
     ],
     loginAttempts: { type: Number, default: 0 },
+    lockUntil: { type: Date, default: null },
     orderHistory: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -76,24 +82,21 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Middleware for hashing passwords before saving
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Method to compare passwords
 UserSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
-};
-
-// Method for soft deletion
-UserSchema.methods.softDelete = function (reason, deletedBy) {
-  this.isDeleted = true;
-  this.deletedAt = new Date();
-  this.deletedReason = reason || 'No reason specified';
-  this.deletedBy = deletedBy || null;
-  return this.save();
-};
-
-// Method to check if user is locked
-UserSchema.methods.isLocked = function () {
-  return this.lockUntil && this.lockUntil > Date.now();
 };
 
 // Method to generate reset password token
@@ -104,9 +107,46 @@ UserSchema.methods.generatePasswordResetToken = function () {
   return token;
 };
 
-// Static query to exclude deleted users by default
-UserSchema.statics.findActive = function () {
-  return this.find({ isDeleted: false });
+// Method for soft deletion
+UserSchema.methods.softDelete = function (reason, deletedBy) {
+  this.isDeleted = true;
+  this.isActive = false;
+  this.deletedAt = new Date();
+  this.deletedReason = reason || 'No reason specified';
+  this.deletedBy = deletedBy || null;
+  return this.save();
 };
+
+// Method to check if the user is locked
+UserSchema.methods.isLocked = function () {
+  return this.lockUntil && this.lockUntil > Date.now();
+};
+
+// Method to unlock the user
+UserSchema.methods.unlockAccount = function () {
+  this.lockUntil = null;
+  this.loginAttempts = 0;
+  return this.save();
+};
+
+// Static query to find active users
+UserSchema.statics.findActive = function () {
+  return this.find({ isDeleted: false, isActive: true });
+};
+
+// Static method to lock a user
+UserSchema.statics.lockUser = async function (userId, duration = 3600000) {
+  const lockUntil = new Date(Date.now() + duration);
+  return this.findByIdAndUpdate(userId, { lockUntil, loginAttempts: 0 });
+};
+
+// Middleware to prevent deletion of super-admins
+UserSchema.pre('remove', function (next) {
+  if (this.role === 'super-admin') {
+    next(new Error('Super-admin accounts cannot be deleted.'));
+  } else {
+    next();
+  }
+});
 
 module.exports = mongoose.model('User', UserSchema);

@@ -3,34 +3,24 @@ import './Header.css';
 import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
-import useAuth from '../../hooks/useAuth'; // Corrected default import
-import { useCart } from '../../context/CartContext'; // Import useCart for basket state
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'; // Use Redux selector for cart
 
 const Header = ({ title, links }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate for redirection
-  const { isAuthenticated, logout } = useAuth(); // Get auth state and logout function from useAuth
-  const { getCartCount } = useCart(); // Get cart item count from CartContext
+  const navigate = useNavigate();
+  const cart = useSelector((state) => state.cart || []); // Get cart from Redux store
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleAuthAction = () => {
-    if (isAuthenticated()) {
-      // Logout and redirect to home
-      logout();
-      navigate('/');
-    } else {
-      // Redirect to login
-      navigate('/login');
-    }
+  const handleBasketClick = () => {
+    navigate('/basket');
   };
 
-  const handleBasketClick = () => {
-    navigate('/basket'); // Navigate to the basket page
-  };
+  const getCartItemCount = () =>
+    cart.reduce((totalCount, item) => totalCount + (item.quantity || 0), 0); // Calculate total quantity
 
   return (
     <header className="app-header">
@@ -50,10 +40,10 @@ const Header = ({ title, links }) => {
             ☰
           </button>
           <button onClick={handleBasketClick} className="basket-button">
-            🛒 Basket ({getCartCount()})
-          </button>
-          <button onClick={handleAuthAction} className="auth-button">
-            {isAuthenticated() ? 'Logout' : 'Login'}
+            🛒 Basket
+            {getCartItemCount() > 0 && (
+              <span className="item-count-badge">{getCartItemCount()}</span>
+            )}
           </button>
         </div>
       </nav>

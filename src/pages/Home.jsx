@@ -19,7 +19,7 @@ const Home = () => {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
-          <h1>Welcome to Baba Jan</h1>
+          <h1>Welcome to Babacan</h1>
           <p>
             Your one-stop shop for the freshest fruits and vegetables, delivered to your
             doorstep.

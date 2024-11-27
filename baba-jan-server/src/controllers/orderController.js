@@ -1,289 +1,171 @@
 const Order = require('../models/Order');
-const Item = require('../models/Item');
-const Notification = require('../models/Notification');
-const OrderAudit = require('../models/OrderAudit');
-const { handleError } = require('../middleware/errorHandler');
-const { validateOrder } = require('../utils/validators');
+const { handleError } = require('../middleware/errorHandler'); // Error handler
+
 const orderController = {};
 
-// ==================== ORDER MANAGEMENT ====================
-
-// 1. Place a new order
-orderController.placeOrder = async (req, res) => {
-  const { items, deliveryInfo, paymentDetails } = req.body;
-
+// Create a new order
+// Create a new order
+orderController.createOrder = async (req, res) => {
   try {
-    // Validate request body
-    const { error } = validateOrder(req.body);
-    if (error) {
-      return res.status(400).json({ success: false, message: `Validation Error: ${error.details[0].message}` });
-    }
+    const { lines, shipping_address, shipping_info, hub_details } = req.body;
 
-    // Ensure paymentDetails are valid
-    if (!paymentDetails || !paymentDetails.method) {
-      return res.status(400).json({ success: false, message: 'Payment method is required.' });
-    }
-    if (paymentDetails.method !== 'cash-on-delivery' && !paymentDetails.transactionId) {
-      return res.status(400).json({ success: false, message: 'Transaction ID is required for non-cash payments.' });
-    }
+    const subtotal = lines.reduce((sum, item) => sum + item.unit_price.amount * item.quantity, 0);
+    const total = subtotal; // Add additional fees dynamically if needed
 
-    // Ensure deliveryInfo is complete
-    if (
-      !deliveryInfo ||
-      deliveryInfo.type === 'delivery' && 
-      (!deliveryInfo.address || !deliveryInfo.city || !deliveryInfo.postalCode || !deliveryInfo.country)
-    ) {
-      return res.status(400).json({ success: false, message: 'Delivery information is incomplete.' });
-    }
-
-    // Ensure authenticated user is available
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({ success: false, message: 'User authentication required.' });
-    }
-
-    // Check if items exist and are available
-    const itemIds = items.map((item) => item.itemId);
-    const availableItems = await Item.find({ _id: { $in: itemIds }, available: true });
-    if (availableItems.length !== items.length) {
-      return res.status(400).json({ success: false, message: 'Some items are not available or out of stock.' });
-    }
-
-    // Calculate total amount and validate variations
-    let totalAmount = 0;
-    for (const item of items) {
-      const itemDetails = availableItems.find((i) => i._id.toString() === item.itemId);
-      if (!itemDetails) {
-        throw new Error(`Item not found: ${item.itemId}`);
-      }
-
-      const variation = itemDetails.variations.find(v => v._id.toString() === item.variationId);
-      if (!variation || !variation.available) {
-        throw new Error(`Variation not available for item: ${itemDetails.name.en}`);
-      }
-
-      item.price = variation.price;
-      item.total = item.quantity * variation.price;
-      totalAmount += item.total;
-    }
-
-    // Create a new order
-    const newOrder = await Order.create({
-      userId: req.user._id, // User ID from authentication middleware
-      items,
-      totalAmount,
-      paymentDetails,
-      deliveryInfo,
-      status: 'pending',
+    const newOrder = new Order({
+      status: 'STATE_PENDING',
+      subtotal: { currency: 'EUR', amount: subtotal, amount_decimal: subtotal * 100 },
+      total: { currency: 'EUR', amount: total, amount_decimal: total * 100 },
+      lines,
+      shipping_address,
+      shipping_info,
+      hub_details,
+      userId: req.user._id,
     });
 
-    // Create a notification for the user
-    await Notification.create({
-      recipient: req.user._id,
-      type: 'order',
-      title: 'Order Placed',
-      message: `Your order #${newOrder._id} has been placed successfully.`,
-    });
-
-    // Return success response
-    res.status(201).json({ success: true, data: newOrder });
-  } catch (err) {
-    console.error('Error placing order:', err); // Improved error logging
-    handleError(res, err);
-  }
-};
-
-
-
-
-// 2. Fetch user-specific orders
-orderController.getUserOrders = async (req, res) => {
-  const { startDate, endDate, page = 1, limit = 10 } = req.query;
-  try {
-    const query = { userId: req.user._id, isDeleted: false };
-    if (startDate && endDate) {
-      query.createdAt = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
-      };
-    }
-
-    const orders = await Order.find(query)
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
-
-    const totalOrders = await Order.countDocuments(query);
-
-    res.status(200).json({
-      success: true,
-      data: orders,
-      pagination: {
-        total: totalOrders,
-        page,
-        limit,
-      },
-    });
+    await newOrder.save();
+    res.status(201).json({ success: true, message: 'Order created successfully.', data: newOrder });
   } catch (err) {
     handleError(res, err);
   }
 };
 
-// 3. Fetch order details by ID
-orderController.getOrderDetails = async (req, res) => {
-  const { orderId } = req.params;
-
-  try {
-    const order = await Order.findById(orderId).populate('userId', 'name email');
-    if (!order) {
-      return res.status(404).json({ success: false, message: 'Order not found.' });
-    }
-
-    res.status(200).json({ success: true, data: order });
-  } catch (err) {
-    console.error('Error fetching order details:', err);
-    res.status(500).json({ success: false, message: 'An error occurred.', error: err.message });
-  }
-};
-
-// 4. Cancel an order
-orderController.cancelOrder = async (req, res) => {
-  const { orderId } = req.params;
-  try {
-    const order = await Order.findOne({ _id: orderId, userId: req.user._id, isDeleted: false });
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found.' });
-
-    if (['delivered', 'cancelled'].includes(order.status)) {
-      return res.status(400).json({ success: false, message: 'Order cannot be cancelled.' });
-    }
-
-    order.status = 'cancelled';
-    order.statusHistory.push({ status: 'cancelled', timestamp: new Date() });
-    await order.save();
-
-    // Notify the user
-    await Notification.create({
-      recipient: req.user._id,
-      type: 'order',
-      title: 'Order Cancelled',
-      message: `Your order #${order._id} has been cancelled.`,
-    });
-
-    res.status(200).json({ success: true, message: 'Order cancelled successfully.' });
-  } catch (err) {
-    handleError(res, err);
-  }
-};
-
-// ==================== ORDER STATUS AND HISTORY ====================
-
-// 5. Update order status (Admin or staff only)
-// Update specific order details
-orderController.updateOrderDetails = async (req, res) => {
-  const { orderId } = req.params;
-  const { items, paymentDetails, status, deliveryInfo, discountAmount } = req.body;
-
-  try {
-    const order = await Order.findById(orderId);
-    if (!order) {
-      return res.status(404).json({ success: false, message: 'Order not found.' });
-    }
-
-    // Update payment details
-    if (paymentDetails) {
-      const { method, transactionId, paidAt } = paymentDetails;
-      order.paymentDetails = {
-        method: method || order.paymentDetails.method,
-        transactionId: transactionId || order.paymentDetails.transactionId,
-        paidAt: paidAt || order.paymentDetails.paidAt,
-      };
-    }
-
-    // Update items
-    if (items) {
-      order.items = items.map((item) => {
-        if (!item.itemId || !item.price || !item.quantity) {
-          throw new Error('Each item must include itemId, price, and quantity.');
-        }
-
-        return {
-          ...item,
-          total: item.price * item.quantity,
-        };
-      });
-    }
-
-    // Update status
-    if (status) {
-      const validStatuses = ['pending', 'confirmed', 'prepared', 'shipped', 'delivered', 'cancelled'];
-      if (!validStatuses.includes(status)) {
-        return res.status(400).json({ success: false, message: 'Invalid status value.' });
-      }
-      order.status = status;
-      order.statusHistory.push({ status, timestamp: new Date() });
-    }
-
-    // Update delivery information
-    if (deliveryInfo) {
-      order.deliveryInfo = { ...order.deliveryInfo, ...deliveryInfo };
-    }
-
-    // Update discount amount
-    if (discountAmount !== undefined) {
-      if (discountAmount < 0) {
-        return res.status(400).json({ success: false, message: 'Discount amount cannot be negative.' });
-      }
-      order.discountAmount = discountAmount;
-    }
-
-    // Recalculate totals and item count
-    order.totalAmount = order.items.reduce((sum, item) => sum + item.total, 0);
-    order.finalAmount = order.totalAmount + order.taxAmount - order.discountAmount;
-    order.itemsCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
-
-    await order.save();
-
-    res.status(200).json({ success: true, message: 'Order updated successfully.', data: order });
-  } catch (err) {
-    console.error('Error updating order details:', err);
-    res.status(500).json({ success: false, message: 'An error occurred.', error: err.message });
-  }
-};
-
-
-
-
-
-
-// 6. Fetch all orders (Admin or staff only)
+// Get all orders
 orderController.getAllOrders = async (req, res) => {
-  const { status, startDate, endDate, page = 1, limit = 10 } = req.query;
   try {
-    const query = { isDeleted: false };
-    if (status) query.status = status;
-    if (startDate && endDate) {
-      query.createdAt = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
-      };
-    }
-
-    const orders = await Order.find(query)
-      .populate('userId', 'name email')
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
-
-    const totalOrders = await Order.countDocuments(query);
-
+    const orders = await Order.find({}).sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       data: orders,
-      pagination: {
-        total: totalOrders,
-        page,
-        limit,
-      },
     });
   } catch (err) {
+    console.error('Error fetching orders:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Get an order by ID
+orderController.getOrderById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: order,
+    });
+  } catch (err) {
+    console.error('Error fetching order:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Update an order status
+orderController.updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const validStatuses = ['STATE_PENDING', 'STATE_DELIVERED', 'STATE_CANCELLED'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status value.' });
+    }
+
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+
+    // Update status and add to status history
+    order.status = status;
+    order.events.push({ status, duration: 0 }); // Add duration logic if required
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Order status updated successfully.',
+      data: order,
+    });
+  } catch (err) {
+    console.error('Error updating order status:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Add an event to an order
+orderController.addOrderEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, duration } = req.body;
+
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+
+    order.events.push({ status, duration });
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Order event added successfully.',
+      data: order,
+    });
+  } catch (err) {
+    console.error('Error adding order event:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Soft delete an order
+orderController.deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+
+    await order.softDelete(reason);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order deleted successfully.',
+    });
+  } catch (err) {
+    console.error('Error deleting order:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Restore a soft-deleted order
+orderController.restoreOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const order = await Order.findByIdAndUpdate(
+      id,
+      { isDeleted: false, deletedAt: null, deletedReason: null },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Order restored successfully.',
+      data: order,
+    });
+  } catch (err) {
+    console.error('Error restoring order:', err.message);
     handleError(res, err);
   }
 };

@@ -97,24 +97,30 @@ userController.registerUser = async (req, res) => {
   
 
 // 2. User login
+// Login user with rate-limiting
 userController.loginUser = async (req, res) => {
-  const { error } = validateLogin(req.body);
-  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
-
   try {
     const { email, password } = req.body;
-
-    // Find user by email, select password field
     const user = await User.findOne({ email }).select('+password');
+
     if (!user) return res.status(404).json({ success: false, message: 'Invalid email or password.' });
 
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password); // Compare hashed password
-    if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid email or password.' });
+    if (user.isLocked()) return res.status(403).json({ success: false, message: 'Account is locked. Try again later.' });
 
-    // Generate JWT
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      user.loginAttempts += 1;
+      if (user.loginAttempts >= 5) {
+        await user.lockAccount(); // Lock account after 5 attempts
+      }
+      await user.save();
+      return res.status(401).json({ success: false, message: 'Invalid email or password.' });
+    }
+
+    user.loginAttempts = 0;
+    await user.save();
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-
     res.status(200).json({ success: true, token, user });
   } catch (err) {
     handleError(res, err);

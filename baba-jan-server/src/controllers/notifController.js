@@ -9,23 +9,17 @@ notificationController.getAuthenticatedUserNotifications = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
   try {
-    // Access `id` directly from `req.user`
-    const userId = req.user.id || req.user._id; // Fallback to `id` if `_id` is not present
+    const userId = req.user.id || req.user._id;
     if (!userId) {
-      console.error('User ID is missing from the request.');
       return res.status(400).json({ success: false, message: 'User ID not provided.' });
     }
 
-    console.log(`Fetching notifications for user ID: ${userId}`);
     const query = { recipient: userId };
-
-    // Fetch notifications with pagination
     const notifications = await Notification.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(Number(limit));
 
-    // Count total notifications for pagination
     const totalNotifications = await Notification.countDocuments(query);
 
     res.status(200).json({
@@ -33,16 +27,29 @@ notificationController.getAuthenticatedUserNotifications = async (req, res) => {
       data: notifications,
       pagination: {
         total: totalNotifications,
-        page,
-        limit,
+        currentPage: page,
+        totalPages: Math.ceil(totalNotifications / limit),
       },
     });
   } catch (err) {
-    console.error('Error fetching user notifications:', err);
-    res.status(500).json({ success: false, message: 'Failed to fetch notifications.' });
+    handleError(res, err);
   }
 };
 
+// Mark all notifications as read
+notificationController.markAllAsRead = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    await Notification.updateMany(
+      { recipient: userId, read: false },
+      { read: true, readAt: new Date() }
+    );
+
+    res.status(200).json({ success: true, message: 'All notifications marked as read.' });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
 
 
 
@@ -103,19 +110,10 @@ notificationController.markAsRead = async (req, res) => {
 
 
 
-// Mark all notifications as read for the authenticated user
-notificationController.markAllAsRead = async (req, res) => {
-  try {
-    await Notification.updateMany(
-      { recipient: req.user._id, read: false },
-      { read: true }
-    );
 
-    res.status(200).json({ success: true, message: 'All notifications marked as read.' });
-  } catch (err) {
-    handleError(res, err);
-  }
-};
+
+
+
 // Delete a specific notification by ID
 notificationController.deleteNotification = async (req, res) => {
   const { notificationId } = req.params;

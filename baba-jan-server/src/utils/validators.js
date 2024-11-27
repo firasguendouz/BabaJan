@@ -46,7 +46,19 @@ validators.validateItem = (data) => {
   return schema.validate(data);
 };
 
-
+validators.validateCategory = (data) => {
+    const schema = Joi.object({
+      title: Joi.string().required(),
+      slug: Joi.string().required(),
+      subcategories: Joi.array().items(
+        Joi.object({
+          name: Joi.string().required(),
+          slug: Joi.string().required(),
+        })
+      ),
+    });
+    return schema.validate(data);
+  };
 // Order Validation
 validators.validateOrder = (data) => {
   const schema = Joi.object({

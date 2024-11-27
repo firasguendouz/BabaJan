@@ -15,7 +15,7 @@ const PromotionSchema = new mongoose.Schema(
     promoCode: {
       type: String,
       trim: true,
-      unique: true, 
+      unique: true,
       sparse: true,
     },
     type: {
@@ -29,6 +29,13 @@ const PromotionSchema = new mongoose.Schema(
         return ['percentage', 'fixed'].includes(this.type);
       },
       min: 0,
+      validate: {
+        validator: function (value) {
+          if (this.type === 'percentage') return value <= 100; // Percentage discounts must be <= 100%
+          return true;
+        },
+        message: 'Percentage discount must not exceed 100%.',
+      },
     },
     condition: {
       type: Map,
@@ -37,9 +44,9 @@ const PromotionSchema = new mongoose.Schema(
     },
     applicableTo: {
       items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
-      categories: [{ type: String }],
+      categories: [{ type: String }], // Categories by slug or ID
       users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-      regions: [{ type: String }],
+      regions: [{ type: String }], // Regions by slug or ID
     },
     startDate: {
       type: Date,
@@ -48,6 +55,12 @@ const PromotionSchema = new mongoose.Schema(
     endDate: {
       type: Date,
       required: true,
+      validate: {
+        validator: function (value) {
+          return value > this.startDate;
+        },
+        message: 'End date must be after start date.',
+      },
     },
     isActive: {
       type: Boolean,
@@ -63,11 +76,12 @@ const PromotionSchema = new mongoose.Schema(
     },
     priority: {
       type: Number,
-      default: 1,
+      default: 1, // Higher priority promotions are applied first
+      min: 1,
     },
     autoDeactivate: {
       type: Boolean,
-      default: false,
+      default: true, // Automatically deactivate if expired or usage limit reached
     },
     alertThreshold: {
       usage: {
@@ -81,16 +95,16 @@ const PromotionSchema = new mongoose.Schema(
     analytics: {
       totalDiscountGiven: {
         type: Number,
-        default: 0,
+        default: 0, // Track total discount applied
       },
       usersClaimed: {
         type: Number,
-        default: 0,
+        default: 0, // Track how many users have claimed this promotion
       },
     },
     tags: {
       type: [String],
-      default: [],
+      default: [], // Tags for grouping or searching promotions
     },
     createdAt: {
       type: Date,
@@ -104,6 +118,13 @@ const PromotionSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    deletedAt: {
+      type: Date,
+    },
+    deletedReason: {
+      type: String,
+      trim: true,
+    },
   },
   { timestamps: true }
 );
@@ -116,20 +137,40 @@ PromotionSchema.pre('save', function (next) {
   next();
 });
 
+// Middleware to update `updatedAt` on update
+PromotionSchema.pre('findOneAndUpdate', function (next) {
+  this.set({ updatedAt: new Date() });
+  next();
+});
+
 // Method to mark a promotion as used
-PromotionSchema.methods.incrementUsage = function () {
+PromotionSchema.methods.incrementUsage = async function () {
   this.usageCount += 1;
   if (this.usageLimit && this.usageCount >= this.usageLimit) {
     this.isActive = false; // Deactivate promotion if usage limit is reached
   }
   return this.save();
 };
-// Soft delete method
-PromotionSchema.methods.softDelete = async function (reason) {
-  this.isActive = false; // Deactivate the promotion
-  this.deletedReason = reason || 'No reason provided'; // Optional: Add a reason field to the schema
-  this.deletedAt = new Date(); // Optional: Add a deletedAt field to the schema
-  return this.save();
+
+// Method to calculate discount for an order
+PromotionSchema.methods.calculateDiscount = function (orderTotal) {
+  if (this.type === 'percentage') {
+    return (this.discountValue / 100) * orderTotal;
+  } else if (this.type === 'fixed') {
+    return Math.min(this.discountValue, orderTotal);
+  }
+  // Add logic for other types as needed
+  return 0;
+};
+
+// Method to check if the promotion is applicable
+PromotionSchema.methods.isApplicable = function (order) {
+  const now = new Date();
+  if (!this.isActive || this.startDate > now || this.endDate < now) {
+    return false;
+  }
+  // Add additional checks based on conditions
+  return true;
 };
 
 // Static method to find active promotions
@@ -140,6 +181,19 @@ PromotionSchema.statics.findActive = function () {
     startDate: { $lte: now },
     endDate: { $gte: now },
   });
+};
+
+// Static method to get promotions by tag
+PromotionSchema.statics.findByTag = function (tag) {
+  return this.find({ tags: tag });
+};
+
+// Soft delete method
+PromotionSchema.methods.softDelete = async function (reason) {
+  this.isActive = false; // Deactivate the promotion
+  this.deletedReason = reason || 'No reason provided';
+  this.deletedAt = new Date();
+  return this.save();
 };
 
 module.exports = mongoose.model('Promotion', PromotionSchema);

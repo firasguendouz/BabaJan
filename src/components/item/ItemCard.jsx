@@ -3,66 +3,80 @@ import './ItemCard.css';
 import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { useCart } from '../../context/CartContext';
+import { addToCart } from '../../state/cartSlice'; // Import the Redux action
+import { useDispatch } from 'react-redux';
 
 const ItemCard = ({ item }) => {
-  const { addToCart } = useCart();
-  const [quantity, setQuantity] = useState(100); // Default to 100 grams
+  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
 
   const handleAddToCart = () => {
     if (quantity > 0 && quantity <= item.stock) {
-      let totalPrice = 0;
-      if (item.unit === 'kg') {
-        // If the unit is kg, the price is per kg, so we convert price per kg to price per gram
-        const pricePerGram = item.price / 1000; // Convert price per kg to price per gram
-        totalPrice = pricePerGram * quantity;
-      } else {
-        // Handle other units if needed
-        totalPrice = item.price * quantity;
-      }
+      const totalPrice =
+        item.unit === 'kg'
+          ? (item.price / 1000) * quantity
+          : item.price * quantity;
 
-      // Add item to cart with price and quantity
-      addToCart({ ...item, quantity, totalPrice });
-      alert(`${quantity} ${item.unit} of ${item.name.en} added to your basket! Total Price: $${totalPrice.toFixed(2)}`);
+      dispatch(addToCart({ ...item, quantity, totalPrice }));
+      alert(
+        `${quantity} ${item.unit || 'pcs'} of ${item.name} added! Total Price: €${totalPrice.toFixed(
+          2
+        )}`
+      );
     } else {
-      alert('Please select a valid quantity.');
+      alert('Please enter a valid quantity within stock limits.');
     }
   };
 
   return (
-    <div className={`item-card ${item.stock > 0 ? '' : 'out-of-stock'}`}>
-      <img src={item.imageUrl} alt={item.name.en} className="item-card-image" />
-      <div className="item-card-details">
-        <h3>{item.name.en}</h3>
-        <p className="category">{item.category}</p>
-        <p>Price per {item.unit}: ${item.price.toFixed(2)}</p>
-        <p>
-          Stock: {item.stock > 0 ? `${item.stock} ${item.unit}s available` : 'Out of stock'}
+    <div className="product-card">
+      <div className="product-card-thumbnail">
+        {item.discount && <div className="product-card-discount">-{item.discount}%</div>}
+        <img
+          src={item.imageUrl || '/placeholder.jpg'}
+          alt={item.name || 'Product'}
+          title={item.name || 'Product'}
+          className="product-card-image"
+          loading="lazy"
+          onError={(e) => {
+            e.target.src = '/placeholder.jpg'; // Fallback image
+          }}
+        />
+      </div>
+      <div className="product-card-content">
+        <p className="product-card-title">{item.name || 'Unknown Product'}</p>
+        <p className="product-card-price">
+          {item.discount ? (
+            <>
+              <span className="product-card-price-current">{item.price.toFixed(2)}€</span>
+              <span className="product-card-price-original">
+                {(item.originalPrice || item.price).toFixed(2)}€
+              </span>
+            </>
+          ) : (
+            <span>{item.price.toFixed(2)}€</span>
+          )}
         </p>
-        <p>Ratings: {item.ratings}⭐</p>
+        <p className="product-card-unit">
+          {item.price.toFixed(2)}€ / {item.unit || 'pcs'}
+        </p>
         {item.stock > 0 ? (
-          <>
-            <label htmlFor={`quantity-${item.id}`} className="quantity-label">
-              Quantity (grams):
-            </label>
+          <div className="product-card-quantity-control">
             <input
-              id={`quantity-${item.id}`}
               type="number"
-              min="20"
-              step="50"
+              min="1"
+              step="1"
               max={item.stock}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="quantity-input"
+              className="product-card-quantity-input"
             />
-            <button onClick={handleAddToCart} className="add-to-cart-btn">
+            <button className="product-card-add-to-cart" onClick={handleAddToCart}>
               Add to Basket
             </button>
-          </>
+          </div>
         ) : (
-          <button disabled className="out-of-stock-btn">
-            Sold Out
-          </button>
+          <div className="product-card-out-of-stock">Out of Stock</div>
         )}
       </div>
     </div>
@@ -72,15 +86,13 @@ const ItemCard = ({ item }) => {
 ItemCard.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    name: PropTypes.shape({
-      en: PropTypes.string.isRequired,
-    }).isRequired,
+    name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    originalPrice: PropTypes.number,
     stock: PropTypes.number.isRequired,
-    imageUrl: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    ratings: PropTypes.number.isRequired,
-    unit: PropTypes.string.isRequired,  // Added unit to the prop validation
+    imageUrl: PropTypes.string,
+    discount: PropTypes.number,
+    unit: PropTypes.string,
   }).isRequired,
 };
 

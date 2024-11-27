@@ -1,138 +1,185 @@
 const Promotion = require('../models/Promotion');
-const Notification = require('../models/Notification');
-const { handleError } = require('../middleware/errorHandler');
-const { validatePromotion } = require('../utils/validators');
+const { handleError } = require('../middleware/errorHandler'); // Error handler
+
 const promotionController = {};
 
-// ==================== PROMOTION MANAGEMENT ====================
-
-// 1. Create a new promotion
+// Create a new promotion
 promotionController.createPromotion = async (req, res) => {
-  const { error } = validatePromotion(req.body);
-  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
-
   try {
-      // Ensure promoCode is unique or default to a generated value
-      if (!req.body.promoCode) {
-          req.body.promoCode = `PROMO-${Date.now()}`; // Generate a unique default promoCode
-      }
+    const promotionData = req.body;
 
-      const newPromotion = await Promotion.create(req.body);
+    const newPromotion = new Promotion(promotionData);
+    await newPromotion.save();
 
-      // Notify admin about the new promotion creation
-      if (req.user && req.user._id) {
-          await Notification.create({
-              recipient: req.user._id, // Correctly set recipient to the logged-in admin ID
-              type: 'system',
-              title: 'New Promotion Created',
-              message: `The promotion "${req.body.title}" has been created successfully.`,
-          });
-      }
-
-      res.status(201).json({ success: true, data: newPromotion });
+    res.status(201).json({
+      success: true,
+      message: 'Promotion created successfully.',
+      data: newPromotion,
+    });
   } catch (err) {
-      handleError(res, err);
+    console.error('Error creating promotion:', err.message);
+    handleError(res, err);
   }
 };
 
-
-
-// 2. Get all promotions (with filters, pagination, and sorting)
+// Get all promotions
 promotionController.getAllPromotions = async (req, res) => {
-  const { isActive, search, sortBy = 'createdAt', order = 'desc', page = 1, limit = 10 } = req.query;
   try {
-    const query = {};
-    if (isActive) query.isActive = isActive === 'true';
-    if (search) query.title = { $regex: search, $options: 'i' }; // Case-insensitive search
+    const promotions = await Promotion.find().sort({ priority: -1, startDate: -1 });
+    res.status(200).json({
+      success: true,
+      data: promotions,
+    });
+  } catch (err) {
+    console.error('Error fetching promotions:', err.message);
+    handleError(res, err);
+  }
+};
 
-    const promotions = await Promotion.find(query)
-      .sort({ [sortBy]: order === 'asc' ? 1 : -1 })
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
+// Get active promotions
+// Get active promotions
+promotionController.getActivePromotions = async (req, res) => {
+  try {
+    const now = new Date();
+    const promotions = await Promotion.find({ isActive: true, startDate: { $lte: now }, endDate: { $gte: now } })
+      .sort({ priority: -1 });
+    
+    res.status(200).json({ success: true, data: promotions });
+  } catch (err) {
+    handleError(res, err);
+  }
+};
 
-    const totalPromotions = await Promotion.countDocuments(query);
+// Get a promotion by ID
+promotionController.getPromotionById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const promotion = await Promotion.findById(id);
+    if (!promotion) {
+      return res.status(404).json({ success: false, message: 'Promotion not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: promotion,
+    });
+  } catch (err) {
+    console.error('Error fetching promotion:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Update a promotion
+promotionController.updatePromotion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    const updatedPromotion = await Promotion.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
+    if (!updatedPromotion) {
+      return res.status(404).json({ success: false, message: 'Promotion not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Promotion updated successfully.',
+      data: updatedPromotion,
+    });
+  } catch (err) {
+    console.error('Error updating promotion:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Soft delete a promotion
+promotionController.deletePromotion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    const promotion = await Promotion.findById(id);
+    if (!promotion) {
+      return res.status(404).json({ success: false, message: 'Promotion not found.' });
+    }
+
+    await promotion.softDelete(reason);
+
+    res.status(200).json({
+      success: true,
+      message: 'Promotion soft deleted successfully.',
+    });
+  } catch (err) {
+    console.error('Error soft deleting promotion:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Restore a soft-deleted promotion
+promotionController.restorePromotion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const promotion = await Promotion.findByIdAndUpdate(
+      id,
+      { isActive: true, deletedAt: null, deletedReason: null },
+      { new: true }
+    );
+
+    if (!promotion) {
+      return res.status(404).json({ success: false, message: 'Promotion not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Promotion restored successfully.',
+      data: promotion,
+    });
+  } catch (err) {
+    console.error('Error restoring promotion:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Increment usage of a promotion
+promotionController.incrementUsage = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const promotion = await Promotion.findById(id);
+    if (!promotion) {
+      return res.status(404).json({ success: false, message: 'Promotion not found.' });
+    }
+
+    await promotion.incrementUsage();
+
+    res.status(200).json({
+      success: true,
+      message: 'Promotion usage incremented successfully.',
+      data: promotion,
+    });
+  } catch (err) {
+    console.error('Error incrementing promotion usage:', err.message);
+    handleError(res, err);
+  }
+};
+
+// Find promotions by tag
+promotionController.getPromotionsByTag = async (req, res) => {
+  try {
+    const { tag } = req.params;
+
+    const promotions = await Promotion.findByTag(tag);
+    if (!promotions.length) {
+      return res.status(404).json({ success: false, message: 'No promotions found for this tag.' });
+    }
 
     res.status(200).json({
       success: true,
       data: promotions,
-      pagination: {
-        total: totalPromotions,
-        page,
-        limit,
-      },
     });
   } catch (err) {
-    handleError(res, err);
-  }
-};
-
-// 3. Get promotion details by ID
-promotionController.getPromotionById = async (req, res) => {
-  const { promoId } = req.params;
-  try {
-    const promotion = await Promotion.findById(promoId);
-    if (!promotion) return res.status(404).json({ success: false, message: 'Promotion not found.' });
-
-    res.status(200).json({ success: true, data: promotion });
-  } catch (err) {
-    handleError(res, err);
-  }
-};
-
-// 4. Update a promotion
-promotionController.updatePromotion = async (req, res) => {
-  const { promoId } = req.params;
-  const { error } = validatePromotion(req.body);
-  if (error) return res.status(400).json({ success: false, message: error.details[0].message });
-
-  try {
-      const updatedPromotion = await Promotion.findByIdAndUpdate(promoId, req.body, { new: true });
-      if (!updatedPromotion) return res.status(404).json({ success: false, message: 'Promotion not found.' });
-
-      res.status(200).json({ success: true, data: updatedPromotion });
-  } catch (err) {
-      handleError(res, err);
-  }
-};
-
-
-// 5. Soft delete a promotion
-promotionController.deletePromotion = async (req, res) => {
-  const { promoId } = req.params;
-
-  try {
-      const promotion = await Promotion.findById(promoId);
-      if (!promotion) return res.status(404).json({ success: false, message: 'Promotion not found.' });
-
-      await promotion.softDelete('Admin deleted the promotion');
-
-      res.status(200).json({ success: true, message: 'Promotion deleted successfully.' });
-  } catch (err) {
-      handleError(res, err);
-  }
-};
-
-
-// 6. Toggle promotion status
-promotionController.togglePromotionStatus = async (req, res) => {
-  const { promoId } = req.params;
-  try {
-    const promotion = await Promotion.findById(promoId);
-    if (!promotion) return res.status(404).json({ success: false, message: 'Promotion not found.' });
-
-    promotion.isActive = !promotion.isActive;
-    await promotion.save();
-
-    // Notify admin about the status change
-    await Notification.create({
-      recipient: req.adminId,
-      type: 'system',
-      title: 'Promotion Status Updated',
-      message: `The promotion "${promotion.title}" is now ${promotion.isActive ? 'active' : 'inactive'}.`,
-    });
-
-    res.status(200).json({ success: true, data: promotion, message: 'Promotion status updated.' });
-  } catch (err) {
+    console.error('Error fetching promotions by tag:', err.message);
     handleError(res, err);
   }
 };

@@ -1,93 +1,49 @@
 import requests
-import json
 
-# URLs
-BASE_URL = "http://localhost:5000/api"
-REGISTER_URL = f"{BASE_URL}/users/register"
-LOGIN_URL = f"{BASE_URL}/users/login"
-ITEMS_URL = f"{BASE_URL}/items"
-
-# Step 2: Admin Login
-admin_login_data = {
-    "email": "admin@example.com",
-    "password": "admin123"
+# Define the base URL and headers
+base_url = "http://localhost:5000/api"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDI1MGU3MzQ3NWMzMjdhNGE2ZmNiNCIsInJvbGUiOiJzdXBlci1hZG1pbiIsImlhdCI6MTczMjQ3MTQ4MCwiZXhwIjoxNzMyNTU3ODgwfQ.zX8BzCQcoVTd8Pz30gK7lq-zrgh__LJq6iNB4EAm9Ds"
 }
 
-print("\nLogging in admin...")
-admin_login_response = requests.post(LOGIN_URL, json=admin_login_data)
-admin_login_json = admin_login_response.json()
-
-if admin_login_response.status_code == 200 and admin_login_json.get('success', False):
-    admin_token = admin_login_json['token']
-    print("Admin login successful. Token:", admin_token)
-else:
-    print("Admin login failed:", admin_login_json.get('message', 'Unknown error'))
-    exit()
-
-# Headers for authenticated requests
-headers = {"Authorization": f"Bearer {admin_token}", "Content-Type": "application/json"}
-
-# Step 3: Create a new item
-print("\nCreating a new item...")
-item_data = {
-    "name": {
-        "en": "Apple",
+# Step 1: Create the product in the `Item` collection
+item_payload = {
+    "sku": "11018350",
+    "name": "Chiquita Bananen 5 Stk. (Costa Rica)",
+    "slug": "chiquita-bananen-5-stk-costa-rica",
+    "quantity": 50,
+    "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/b5574d05-d273-447a-8994-23b3b668d518.png",
+    "price": {
+        "amount": 2.59,
+        "currency": "EUR"
     },
-    "category": "Fruits",
-    "photos": ["https://example.com/apple.jpg"],
-    "unit": "kg",  # unit can be kg, piece, bunch, etc.
-    "price": 2.99,  # Price per kg
-    "stock": 100,
-    "tags": ["Organic", "Seasonal"],
-    "available": True
+    "base_price": {
+        "amount": 0.52,
+        "currency": "EUR"
+    },
+    "base_unit": {
+        "unit": "Stk.",
+        "amount": 1
+    }
 }
 
-item_response = requests.post(ITEMS_URL, headers=headers, json=item_data)
+item_response = requests.post(f"{base_url}/items/categories/6743a5ad34d750a8afadb816/subcategories/6743b388e8e94e088e169aa6/products", json=item_payload, headers=headers)
+
 if item_response.status_code == 201:
-    item = item_response.json()['data']
-    print("Item created successfully:", json.dumps(item, indent=2))
-else:
-    print("Failed to create item:", item_response.json())
-    exit()
+    # Extract the generated ObjectId for the item
+    item_id = item_response.json()["data"]["_id"]
+    print(f"Item created successfully with ID: {item_id}")
 
-# Step 4: Update the created item
-print("\nUpdating the created item...")
-item_update_data = {
-    "price": 3.49,  # Updated price per kg
-    "stock": 150  # Updated stock
-}
+    # Step 2: Add the product ObjectId to the subcategory
+    subcategory_url = f"{base_url}/categories/6743a5ad34d750a8afadb816/subcategories/6743b388e8e94e088e169aa6/products"
+    subcategory_payload = {"productId": item_id}
 
-update_response = requests.put(f"{ITEMS_URL}/{item['_id']}", headers=headers, json=item_update_data)
-if update_response.status_code == 200:
-    updated_item = update_response.json()['data']
-    print("Item updated successfully:", json.dumps(updated_item, indent=2))
-else:
-    print("Failed to update item:", update_response.json())
-    exit()
+    subcategory_response = requests.post(subcategory_url, json=subcategory_payload, headers=headers)
 
-# Step 5: Delete the item
-print("\nDeleting the item...")
-delete_response = requests.delete(f"{ITEMS_URL}/{item['_id']}", headers=headers)
-if delete_response.status_code == 200:
-    print("Item deleted successfully.")
+    if subcategory_response.status_code == 200:
+        print("Product added to subcategory successfully:", subcategory_response.json())
+    else:
+        print("Failed to add product to subcategory:", subcategory_response.status_code, subcategory_response.json())
 else:
-    print("Failed to delete item:", delete_response.json())
-    exit()
-
-# Step 6: Get all items
-print("\nFetching all items...")
-all_items_response = requests.get(ITEMS_URL, headers=headers)
-if all_items_response.status_code == 200:
-    all_items = all_items_response.json()
-    print("All items fetched successfully:", json.dumps(all_items, indent=2))
-else:
-    print("Failed to fetch all items:", all_items_response.json())
-
-# Step 7: Get item details by ID
-print(f"\nFetching details of the created item ID: {item['_id']}...")
-item_details_response = requests.get(f"{ITEMS_URL}/{item['_id']}", headers=headers)
-if item_details_response.status_code == 200:
-    item_details = item_details_response.json()
-    print("Item details fetched successfully:", json.dumps(item_details, indent=2))
-else:
-    print("Failed to fetch item details:", item_details_response.json())
+    print("Failed to create item:", item_response.status_code, item_response.json())

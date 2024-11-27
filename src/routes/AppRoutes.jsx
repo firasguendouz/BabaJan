@@ -4,7 +4,6 @@ import AdminDashboard from '../pages/AdminDashboard';
 import AdminRoute from './AdminRoute';
 import Basket from '../pages/Basket';
 import Home from '../pages/Home';
-import ItemDetailsPage from '../pages/ItemDetails';
 import Items from '../pages/Items';
 import Login from '../pages/Login';
 import OrderDetailsPage from '../pages/OrderDetails';
@@ -25,7 +24,6 @@ const AppRoutes = () => {
       <Route path="/orders" element={<PrivateRoute component={Orders} />} />
       <Route path="/orders/:orderId" element={<PrivateRoute component={OrderDetailsPage} />} />
       <Route path="/items" element={<Items />} />
-      <Route path="/items/:itemId" element={<ItemDetailsPage />} />
       <Route path="/admin" element={<AdminRoute component={AdminDashboard} />} />
     </Routes>
   );
