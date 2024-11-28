@@ -9,7 +9,7 @@ import { logout } from '../../state/userSlice'; // Redux logout action
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { isAuthenticated } = useSelector((state) => state.user);
 
   const handleLogout = () => {
     dispatch(logout());

@@ -40,7 +40,7 @@ const useFetch = (url, options = {}, dependencies = []) => {
       // Cleanup function to prevent memory leaks
       isMounted = false;
     };
-  }, [url, ...dependencies]); // Spread dependencies to track dynamic changes
+  }, [url, options]); // Spread dependencies to track dynamic changes
 
   return { data, loading, error };
 };
