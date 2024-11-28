@@ -103,14 +103,9 @@ const OrderSchema = new mongoose.Schema(
     lines: [OrderLineSchema],
     shipping_address: ShippingAddressSchema,
     shipping_info: {
-      shipping_method_name: { type: String, required: true },
+      shipping_method_name: { type: String, enum: ['PICKUP', 'DELIVERY'], required: true },
     },
-    hub_details: {
-      slug: { type: String, required: true },
-      city: { type: String, required: true },
-      country: { type: String, required: true },
-    },
-    delivery_state: { type: String, enum: ['PENDING', 'IN_TRANSIT', 'DELIVERED'], required: true },
+    delivery_state: { type: String, enum: ['PENDING', 'IN_TRANSIT', 'DELIVERED'], required: true, default: 'PENDING'  },
     cancellation: { type: String, default: null },
     fees: [FeeSchema],
     refundable: { type: Boolean, default: false },

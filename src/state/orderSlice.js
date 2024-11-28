@@ -4,9 +4,12 @@ import axios from 'axios';
 
 export const createOrder = createAsyncThunk(
   'orders/createOrder',
-  async (orderData, { rejectWithValue }) => {
+  async (orderData, { getState, rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/orders', orderData);
+      const token = getState().user.token; // Retrieve token from Redux state
+      const response = await axios.post('http://localhost:5000/api/orders', orderData, {
+        headers: { Authorization: `Bearer ${token}` }, // Attach token
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

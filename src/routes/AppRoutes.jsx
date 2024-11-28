@@ -6,6 +6,7 @@ import Items from '../pages/Items';
 import Login from '../pages/Login';
 import OrderDetailsPage from '../pages/OrderDetails';
 import Orders from '../pages/Orders';
+import PaymentPage from '../pages/Payment';
 import PrivateRoute from './PrivateRoute';
 import Profile from '../pages/Profile';
 import React from 'react';
@@ -18,6 +19,8 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/basket" element={<Basket />} />
+      <Route path="/payment" element={<PrivateRoute component={PaymentPage} />} />
+
       <Route path="/items" element={<Items />} />
       <Route path="/profile" element={<PrivateRoute component={Profile} />} />
       <Route path="/orders" element={<PrivateRoute component={Orders} />} />

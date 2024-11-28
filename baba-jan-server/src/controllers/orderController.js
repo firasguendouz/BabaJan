@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const { handleError } = require('../middleware/errorHandler'); // Error handler
+const User = require('../models/User');
 
 const orderController = {};
 
@@ -7,12 +8,62 @@ const orderController = {};
 // Create a new order
 orderController.createOrder = async (req, res) => {
   try {
-    const { lines, shipping_address, shipping_info, hub_details } = req.body;
+    const { lines, shipping_address, shipping_info } = req.body;
 
+    // Validate request body
+    if (!lines || !shipping_address || !shipping_info) {
+      return res.status(400).json({ success: false, message: 'Missing required fields.' });
+    }
+
+    // Fetch user from database
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: `User not found.${userId}` });
+    }
+
+    // Derive the order number
+    let phone = user.phone;
+    if (!phone) {
+      // Require the phone number if not present
+      if (!req.body.phone) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'Phone number is required for this order.' });
+      }
+
+      // Validate phone number format
+      const phoneRegex = /^\+49\d{10}$/;
+      if (!phoneRegex.test(req.body.phone)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid German phone number (must start with +49 and have 10 digits after).',
+        });
+      }
+
+      // Save the phone number to the user's record
+      phone = req.body.phone;
+      user.phone = phone;
+      await user.save();
+    }
+
+    // Generate a unique order number using the phone number
+    const orderNumber = `ORD-${phone}-${Date.now()}`;
+
+    // Calculate subtotal and total
     const subtotal = lines.reduce((sum, item) => sum + item.unit_price.amount * item.quantity, 0);
     const total = subtotal; // Add additional fees dynamically if needed
 
+    // Provide default hub details
+    const hub_details = {
+      slug: 'default-hub',
+      city: 'Default City',
+      country: 'Default Country',
+    };
+
+    // Create a new order
     const newOrder = new Order({
+      number: orderNumber,
       status: 'STATE_PENDING',
       subtotal: { currency: 'EUR', amount: subtotal, amount_decimal: subtotal * 100 },
       total: { currency: 'EUR', amount: total, amount_decimal: total * 100 },
@@ -20,13 +71,20 @@ orderController.createOrder = async (req, res) => {
       shipping_address,
       shipping_info,
       hub_details,
-      userId: req.user._id,
+      userId,
     });
 
+    // Save the order to the database
     await newOrder.save();
-    res.status(201).json({ success: true, message: 'Order created successfully.', data: newOrder });
+
+    res.status(201).json({
+      success: true,
+      message: 'Order created successfully.',
+      data: newOrder,
+    });
   } catch (err) {
-    handleError(res, err);
+    console.error('Order creation failed:', err);
+    res.status(500).json({ success: false, message: 'Order creation failed.', error: err.message });
   }
 };
 
