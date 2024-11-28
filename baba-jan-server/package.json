@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "echo 'No build step required'"
+
   },
   "author": "",
   "license": "ISC",
