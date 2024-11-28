@@ -11,7 +11,7 @@ const App = () => {
     <Router>
       <div className="app">
         <Header
-          title="Baba Jan"
+          title="BabaCan"
           links={[
             { label: 'Home', href: '/' },
             { label: 'Shop', href: '/items' },
@@ -22,7 +22,7 @@ const App = () => {
           <AppRoutes />
         </main>
         <Footer
-          text="© 2024 Baba Jan. All rights reserved."
+          text="© 2024 BabaCan . All rights reserved."
           links={[
             { label: 'Privacy Policy', href: '/privacy' },
             { label: 'Terms of Service', href: '/terms' },

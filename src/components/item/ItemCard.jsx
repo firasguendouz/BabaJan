@@ -3,7 +3,7 @@ import './ItemCard.css';
 import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { addToCart } from '../../state/cartSlice'; // Import the Redux action
+import { addToCart } from '../../state/cartSlice'; // Redux action
 import { useDispatch } from 'react-redux';
 
 const ItemCard = ({ item }) => {
@@ -18,6 +18,7 @@ const ItemCard = ({ item }) => {
           : item.price * quantity;
 
       dispatch(addToCart({ ...item, quantity, totalPrice }));
+
       alert(
         `${quantity} ${item.unit || 'pcs'} of ${item.name} added! Total Price: €${totalPrice.toFixed(
           2
@@ -29,13 +30,17 @@ const ItemCard = ({ item }) => {
   };
 
   return (
-    <div className="product-card">
+    <div className="product-card" aria-label={`Product: ${item.name}`}>
+      {/* Thumbnail Section */}
       <div className="product-card-thumbnail">
-        {item.discount && <div className="product-card-discount">-{item.discount}%</div> || ''}
+        {item.discount && (
+          <div className="product-card-discount" aria-label={`Discount: ${item.discount}%`}>
+            -{item.discount}%
+          </div>
+        )}
         <img
           src={item.imageUrl || '/placeholder.jpg'}
           alt={item.name || 'Product'}
-          title={item.name || 'Product'}
           className="product-card-image"
           loading="lazy"
           onError={(e) => {
@@ -43,12 +48,16 @@ const ItemCard = ({ item }) => {
           }}
         />
       </div>
+
+      {/* Content Section */}
       <div className="product-card-content">
-        <p className="product-card-title">{item.name || 'Unknown Product'}</p>
-        <p className="product-card-price">
+        <h3 className="product-card-title">{item.name || 'Unknown Product'}</h3>
+        <div className="product-card-pricing">
           {item.discount ? (
             <>
-              <span className="product-card-price-current">{item.price.toFixed(2)}€</span>
+              <span className="product-card-price-current">
+                {item.price.toFixed(2)}€
+              </span>
               <span className="product-card-price-original">
                 {(item.originalPrice || item.price).toFixed(2)}€
               </span>
@@ -56,13 +65,19 @@ const ItemCard = ({ item }) => {
           ) : (
             <span>{item.price.toFixed(2)}€</span>
           )}
-        </p>
+        </div>
         <p className="product-card-unit">
           {item.price.toFixed(2)}€ / {item.unit || 'pcs'}
         </p>
+
+        {/* Stock Control */}
         {item.stock > 0 ? (
           <div className="product-card-quantity-control">
+            <label htmlFor={`quantity-${item.id}`} className="visually-hidden">
+              Quantity
+            </label>
             <input
+              id={`quantity-${item.id}`}
               type="number"
               min="1"
               step="1"
@@ -70,13 +85,20 @@ const ItemCard = ({ item }) => {
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
               className="product-card-quantity-input"
+              aria-label={`Quantity for ${item.name}`}
             />
-            <button className="product-card-add-to-cart" onClick={handleAddToCart}>
+            <button
+              className="product-card-add-to-cart"
+              onClick={handleAddToCart}
+              aria-label={`Add ${quantity} ${item.unit || 'pcs'} of ${item.name} to cart`}
+            >
               Add to Basket
             </button>
           </div>
         ) : (
-          <div className="product-card-out-of-stock">Out of Stock</div>
+          <div className="product-card-out-of-stock" aria-label="Out of Stock">
+            Out of Stock
+          </div>
         )}
       </div>
     </div>

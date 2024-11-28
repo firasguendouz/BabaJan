@@ -18,40 +18,49 @@ const Header = () => {
 
   return (
     <header className="app-header">
-      <div className="header-brand">
-        <Link to="/">
-          <h1>Baba Jan</h1>
-        </Link>
-      </div>
-      <nav className="header-nav">
-        <ul className="nav-links">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/items">Shop</Link>
-          </li>
-          <li>
-            <Link to="/basket">Basket</Link>
-          </li>
-          {isAuthenticated ? (
-            <>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <button className="logout-button" onClick={handleLogout}>
-                  Logout
-                </button>
-              </li>
-            </>
-          ) : (
+      <div className="header-container">
+        {/* Brand Section */}
+        <div className="header-brand">
+          <Link to="/" aria-label="Home">
+            <h1>BabaCan Market</h1>
+          </Link>
+        </div>
+
+        {/* Navigation Section */}
+        <nav className="header-nav">
+          <ul className="nav-links">
             <li>
-              <Link to="/login">Login</Link>
+              <Link to="/">Home</Link>
             </li>
-          )}
-        </ul>
-      </nav>
+            <li>
+              <Link to="/items">Shop</Link>
+            </li>
+            <li>
+              <Link to="/basket">Basket</Link>
+            </li>
+            {isAuthenticated ? (
+              <>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <button
+                    className="logout-button"
+                    onClick={handleLogout}
+                    aria-label="Logout"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            )}
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 };
