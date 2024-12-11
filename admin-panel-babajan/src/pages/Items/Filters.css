@@ -1,0 +1,96 @@
+.horizontal-menu {
+  margin: 20px 0;
+}
+
+.category-menu,
+.subcategory-menu {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px;
+  flex-wrap: wrap; /* Responsive: Wrap items on smaller screens */
+}
+
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+  width: 100%;
+  scrollbar-width: thin; /* Responsive scrollbars */
+  scrollbar-color: #007b55 #f0f0f0; /* Modern browser styling */
+}
+
+.scroll-container::-webkit-scrollbar {
+  height: 8px; /* Smaller scrollbars */
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #007b55;
+  border-radius: 5px;
+}
+
+.scroll-arrow {
+  background-color: #007b55;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-arrow.hidden {
+  visibility: hidden;
+}
+
+.scroll-arrow:hover {
+  background-color: #005c41;
+  transform: scale(1.1); /* Subtle hover animation */
+}
+
+.category-tab,
+.subcategory-tab {
+  background-color: white;
+  color: #007b55;
+  border: 1px solid #007b55;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem; /* Responsive font size */
+}
+
+.category-tab.active,
+.subcategory-tab.active {
+  background-color: #007b55;
+  color: white;
+  transform: translateY(-2px); /* Active state animation */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.category-tab:hover,
+.subcategory-tab:hover {
+  background-color: #005c41;
+  color: white;
+  transform: translateY(-1px); /* Hover animation */
+}
+
+@media screen and (max-width: 768px) {
+  .category-tab,
+  .subcategory-tab {
+    font-size: 0.9rem; /* Smaller font on smaller screens */
+    padding: 6px 12px; /* Adjust padding */
+  }
+
+  .scroll-arrow {
+    padding: 6px 10px; /* Smaller arrows */
+    font-size: 0.9rem;
+  }
+}

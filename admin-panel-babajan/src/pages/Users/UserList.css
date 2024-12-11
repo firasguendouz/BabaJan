@@ -1,0 +1,127 @@
+.user-list-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .user-filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .user-filters input {
+    width: 70%;
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .user-filters select {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .user-table th,
+  .user-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .user-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .user-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .user-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .view-button,
+  .delete-button {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .view-button {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .view-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .delete-button {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .delete-button:hover {
+    background-color: #c0392b;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .pagination button {
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+  }
+  
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  

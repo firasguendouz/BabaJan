@@ -1,0 +1,114 @@
+.promotion-list-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .promotion-filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .promotion-filters input {
+    width: 70%;
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .promotion-filters select {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .promotion-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .promotion-table th,
+  .promotion-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .promotion-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .promotion-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .promotion-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .view-button,
+  .edit-button,
+  .status-button,
+  .delete-button {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .view-button {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .view-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .edit-button {
+    background-color: #f1c40f;
+    color: white;
+  }
+  
+  .edit-button:hover {
+    background-color: #d4ac0d;
+  }
+  
+  .status-button {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  .status-button:hover {
+    background-color: #27ae60;
+  }
+  
+  .delete-button {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .delete-button:hover {
+    background-color: #c0392b;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .pagination button {
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+  }
+  

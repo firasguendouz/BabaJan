@@ -1,0 +1,124 @@
+/* Modal Container */
+.modal {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Slightly darker shadow for better visibility */
+  animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+  position: relative; /* For future positioning or close button */
+}
+
+/* Label Styling */
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold; /* Makes labels more distinct */
+  color: #333; /* Neutral color for better readability */
+}
+
+/* Input and Select Styling */
+label input,
+label select {
+  width: 100%;
+  padding: 10px; /* Slightly larger padding for better usability */
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem; /* Clear and readable font size */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth focus effect */
+}
+
+label input:focus,
+label select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle focus shadow */
+  outline: none;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px; /* Adds space between buttons */
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-actions button:first-of-type {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-actions button:first-of-type:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.modal-actions button:first-of-type:active {
+  background-color: #004085;
+  transform: translateY(0); /* Return on click */
+}
+
+.modal-actions button:last-of-type {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-actions button:last-of-type:hover {
+  background-color: #c82333;
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.modal-actions button:last-of-type:active {
+  background-color: #a71d2a;
+  transform: translateY(0); /* Return on click */
+}
+
+/* Error Message Styling */
+.error {
+  color: #dc3545;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 0.9rem; /* Subtle and readable */
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal {
+      width: 90%; /* Adjust modal width for smaller screens */
+      padding: 15px; /* Reduce padding */
+  }
+
+  .modal-actions {
+      flex-direction: column; /* Stack buttons vertically */
+      gap: 10px;
+  }
+
+  .modal-actions button {
+      width: 100%; /* Full-width buttons for small screens */
+      font-size: 0.9rem; /* Adjust font size */
+  }
+}
