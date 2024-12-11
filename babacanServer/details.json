@@ -1,0 +1,1320 @@
+{
+    "id": "6743a62b34d750a8afadb818",
+    "slug": "obst",
+    "title": "Obst",
+    "categories": [
+        {
+            "id": "994c9a04-a77b-4e5c-a2c8-9047c3dd6243",
+            "slug": "obst-bananen",
+            "name": "Bananen",
+            "products": {
+                "products": [
+                    {
+                        "id": "821968a1-b283-4816-8beb-12a974d6f285",
+                        "sku": "11018350",
+                        "name": "Chiquita Bananen 5 Stk. (Costa Rica)",
+                        "slug": "chiquita-bananen-5-stk-costa-rica",
+                        "quantity": 50,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/b5574d05-d273-447a-8994-23b3b668d518.png",
+                        "price": {
+                            "amount": 2.59,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 0.52,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTgzNTAqCAiDAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQ5OTRjOWEwNC1hNzdiLTRlNWMtYTJjOC05MDQ3YzNkZDYyNDMQAVABcAE="
+                    },
+                    {
+                        "id": "3a0fa700-ba0a-47cb-aa84-0e680c19584a",
+                        "sku": "108500171",
+                        "name": "Bananen 5 Stk. (Ecuador)",
+                        "slug": "bananen-5-stk-ecuador",
+                        "quantity": 19,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_best_price/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/e4af2c69-ce3e-4620-90e5-2e37199da0d0.png",
+                        "price": {
+                            "amount": 1.49,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 0.3,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTA4NTAwMTcxKggIlQESA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokOTk0YzlhMDQtYTc3Yi00ZTVjLWEyYzgtOTA0N2MzZGQ2MjQzEAFQAnAB"
+                    },
+                    {
+                        "id": "9e2cea50-977b-45ed-bba6-3aaea20ed27d",
+                        "sku": "108500200",
+                        "name": "Bananen 5 Stk. (Kolumbien)",
+                        "slug": "bananen-5-stk-kolumbien",
+                        "quantity": 37,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_best_price/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/c0305693-919e-4083-98c6-c6be520dd31d.png",
+                        "price": {
+                            "amount": 1.49,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 0.3,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTA4NTAwMjAwKggIlQESA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokOTk0YzlhMDQtYTc3Yi00ZTVjLWEyYzgtOTA0N2MzZGQ2MjQzEAFQA3AB"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "2dc95eef-0fda-4cfd-be1b-86a71f4cb5d0",
+            "slug": "obst-aepfel-birnen",
+            "name": "Äpfel & Birnen",
+            "products": {
+                "products": [
+                    {
+                        "id": "620d08dc-1334-4e98-a3f5-c607c8d56e1e",
+                        "sku": "11016403",
+                        "name": "Apfel Pink Lady 1kg (Italien)",
+                        "slug": "apfel-pink-lady-1kg-italien",
+                        "quantity": 11,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/0827cf13-b742-4eef-b3bb-71eaddf29816.png",
+                        "price": {
+                            "amount": 3.99,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 3.99,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTY0MDMqCAiPAxIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQyZGM5NWVlZi0wZmRhLTRjZmQtYmUxYi04NmE3MWY0Y2I1ZDAQAlABcAE="
+                    },
+                    {
+                        "id": "4b12bb1a-9afe-4663-8a71-27bf41c06b19",
+                        "sku": "109150256",
+                        "name": "Apfel Granny Smith 4 Stk. (Italien)",
+                        "slug": "apfel-granny-smith-4-stk-italien",
+                        "quantity": 8,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/7851ae23-2937-4f99-a0ff-558f8e44aa29.png",
+                        "price": {
+                            "amount": 1.99,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 0.5,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTA5MTUwMjU2KggIxwESA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMmRjOTVlZWYtMGZkYS00Y2ZkLWJlMWItODZhNzFmNGNiNWQwEAJQAnAB"
+                    },
+                    {
+                        "id": "efbb4035-a393-4a17-ac42-8a3af0c67695",
+                        "sku": "109700326",
+                        "name": "Apfel Jonagold 4 Stk. (Deutschland)",
+                        "slug": "apfel-jonagold-4-stk-deutschland",
+                        "quantity": 20,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/27902437-7119-41ce-a678-9d2394caad4c.png",
+                        "price": {
+                            "amount": 2.76,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 0.69,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTA5NzAwMzI2KggIlAISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMmRjOTVlZWYtMGZkYS00Y2ZkLWJlMWItODZhNzFmNGNiNWQwEAJQA3AB"
+                    },
+                    {
+                        "id": "c966e6e0-b688-42af-856b-231a8a074ab4",
+                        "sku": "110151299",
+                        "name": "Birne Abate 4 Stk. (Italien)",
+                        "slug": "birne-abate-4-stk-italien",
+                        "quantity": 2,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/60074467-fe93-40c0-9a2f-c24df35973e5.png",
+                        "price": {
+                            "amount": 3.16,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 0.79,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTEwMTUxMjk5KggIvAISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMmRjOTVlZWYtMGZkYS00Y2ZkLWJlMWItODZhNzFmNGNiNWQwEAJQBHAB"
+                    },
+                    {
+                        "id": "868b90ea-5853-46c4-8b37-5a2535e7c740",
+                        "sku": "122301784",
+                        "name": "Apfel Snack Gala 1kg (Deutschland)",
+                        "slug": "apfel-snack-gala-1kg-deutschland",
+                        "quantity": 13,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/bef07408-5868-41e9-adcb-800280f9cba6.png",
+                        "price": {
+                            "amount": 3.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 3.19,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTIyMzAxNzg0KggIvwISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMmRjOTVlZWYtMGZkYS00Y2ZkLWJlMWItODZhNzFmNGNiNWQwEAJQBXAB"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "fdf610cf-b8b4-4d5f-b948-9f791f5db3e9",
+            "slug": "obst-beeren",
+            "name": "Beeren",
+            "products": {
+                "products": [
+                    {
+                        "id": "816b0456-3679-4d48-bbad-c5663a31b383",
+                        "sku": "11010747",
+                        "name": "Himbeeren 125g (Marokko)",
+                        "slug": "himbeeren-125g-kl-i-deutschland",
+                        "quantity": 7,
+                        "max_single_order_quantity": 9,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/4a03ae6d-d068-46a0-8823-806e939aed5d.png",
+                        "price": {
+                            "amount": 2.79,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 22.32,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTA3NDcqCAiXAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRmZGY2MTBjZi1iOGI0LTRkNWYtYjk0OC05Zjc5MWY1ZGIzZTkQA1ABcAE="
+                    },
+                    {
+                        "id": "d750278b-3a25-4a68-a6e2-88b1e55eed51",
+                        "sku": "11016469",
+                        "name": "Himbeeren 250g (Marokko)",
+                        "slug": "himbeeren-250g-marokko",
+                        "quantity": 50,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/b749a2f8-6e1b-409a-914a-858bf3f0c86d.png",
+                        "price": {
+                            "amount": 4.89,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 19.56,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTY0NjkqCAjoAxIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRmZGY2MTBjZi1iOGI0LTRkNWYtYjk0OC05Zjc5MWY1ZGIzZTkQA1ACcAE="
+                    },
+                    {
+                        "id": "9d3a6e60-4bda-43cf-966b-6b20c4bb2e31",
+                        "sku": "11013295",
+                        "name": "Heidelbeeren 125g (Deutschland)",
+                        "slug": "heidelbeeren-125g-deutschland",
+                        "quantity": 26,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/495f6a1c-e608-4945-9955-0c97b81916e2.png",
+                        "price": {
+                            "amount": 2.49,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 19.92,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTMyOTUqCAj5ARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRmZGY2MTBjZi1iOGI0LTRkNWYtYjk0OC05Zjc5MWY1ZGIzZTkQA1ADcAE="
+                    },
+                    {
+                        "id": "ad5edd07-45f6-444f-9ad7-76269e1f98bd",
+                        "sku": "11013206",
+                        "name": "Brombeeren 125g (Mexico)",
+                        "slug": "brombeeren-125g-mexico",
+                        "quantity": 6,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/434c01cc-a4df-43eb-9bd2-d0add8e32ff8.png",
+                        "price": {
+                            "amount": 4.29,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 34.32,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTMyMDYqCAitAxIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRmZGY2MTBjZi1iOGI0LTRkNWYtYjk0OC05Zjc5MWY1ZGIzZTkQA1AEcAE="
+                    }
+                ]
+            }
+        },
+        {
+            "id": "d1403f5c-563a-47a6-ab50-bf398e46ff59",
+            "slug": "obst-exoten",
+            "name": "Exoten",
+            "products": {
+                "products": [
+                    {
+                        "id": "6d1ce8d3-cd28-4774-bb9a-e184a1243175",
+                        "sku": "11016571",
+                        "name": "Physalis 100g (Kolumbien)",
+                        "slug": "physalis-100g-kolumbien",
+                        "quantity": 7,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/bd5e092c-f8f7-4006-875e-aa48af42192e.png",
+                        "price": {
+                            "amount": 2.09,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 20.9,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTY1NzEqCAjRARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFABcAE="
+                    },
+                    {
+                        "id": "f9e892cc-54bb-4b53-bae5-cd1a7f531ff6",
+                        "sku": "11012240",
+                        "name": "Avocado 1 Stk. (Chile)",
+                        "slug": "avocado-essreif-1-stk-chile",
+                        "quantity": 1,
+                        "max_single_order_quantity": 4,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/42d6bdb9-6313-42bb-8752-e7015dd6b32f.png",
+                        "price": {
+                            "amount": 1.59,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 1.59,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTIyNDAqCAifARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFACcAE="
+                    },
+                    {
+                        "id": "db78af61-44eb-4d1b-9893-0d26bed644ca",
+                        "sku": "11012166",
+                        "name": "Avocado 1 Stk. (Israel)",
+                        "slug": "avocado-1-stk-israel",
+                        "quantity": 115,
+                        "max_single_order_quantity": 4,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/dbd81085-9d10-4e6c-bc58-ccb3dac22597.png",
+                        "price": {
+                            "amount": 1.59,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 1.59,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTIxNjYqCAifARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFADcAE="
+                    },
+                    {
+                        "id": "7f7782b9-2c0a-4bdd-857e-16371f659566",
+                        "sku": "11012497",
+                        "name": "Bio Avocado 1 Stk. (Peru)",
+                        "slug": "bio-avocado-hass-1-stk-peru",
+                        "quantity": 394,
+                        "max_single_order_quantity": 25,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/f2cb3287-e6c8-432a-89a3-54e13c060b98.png",
+                        "price": {
+                            "amount": 2.09,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 2.09,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTI0OTcqCAjRARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFAEcAE="
+                    },
+                    {
+                        "id": "6f91740f-227e-4afa-aa04-b66e1eca6e9b",
+                        "sku": "11010744",
+                        "name": "Ananas Sweet 1 Stk. (Costa Rica)",
+                        "slug": "ananas-sweet-kl-i-costa-rica-1-stk",
+                        "quantity": 9,
+                        "max_single_order_quantity": 5,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/454a0afd-1de8-455b-8da9-aafe0e796734.png",
+                        "price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTA3NDQqCAjbARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFAFcAE="
+                    },
+                    {
+                        "id": "be0fb5e1-2dd1-45fd-9128-12cd3d6fffd7",
+                        "sku": "11016492",
+                        "name": "Bio Kiwi Schale 4 Stk. (Italien)",
+                        "slug": "bio-kiwi-schale-4-stk-italien",
+                        "quantity": 14,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/222a55fc-0b5f-4d30-9d67-3f23b9170da5.png",
+                        "price": {
+                            "amount": 2.69,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 0.67,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTY0OTIqCAiNAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFAGcAE="
+                    },
+                    {
+                        "id": "ee06e273-5dfb-4417-8877-b7a116d5d4a4",
+                        "sku": "11011793",
+                        "name": "Papaya 1 Stk. (Brasilien)",
+                        "slug": "papaya-essreif-1-stk-brasilien",
+                        "quantity": 4,
+                        "max_single_order_quantity": 10,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/ffcc8ef6-4479-450f-8b08-b8e3309401c2.png",
+                        "price": {
+                            "amount": 3.49,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 3.49,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTE3OTMqCAjdAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFAHcAE="
+                    },
+                    {
+                        "id": "c1d08859-9dd0-49e1-b409-3847e62417af",
+                        "sku": "11012188",
+                        "name": "Mango 1 Stk. (Peru)",
+                        "slug": "mango-1-stk-peru",
+                        "quantity": 1,
+                        "max_single_order_quantity": 15,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/188c1fc7-c9f2-4706-a6b9-162855991018.png",
+                        "price": {
+                            "amount": 2.49,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 2.49,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTIxODgqCAj5ARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFAIcAE="
+                    },
+                    {
+                        "id": "47b9e95b-03cc-43f3-b6cc-b346a2d8abe2",
+                        "sku": "108700316",
+                        "name": "Avocado 2 Stk. (Israel)",
+                        "slug": "avocado-2-stk-israel",
+                        "quantity": 57,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/2d654277-de0a-42f8-99bd-966b95a79033.png",
+                        "price": {
+                            "amount": 2.99,
+                            "currency": "EUR",
+                            "discount": {
+                                "original_amount": 3.18,
+                                "percentage": 6
+                            }
+                        },
+                        "base_price": {
+                            "amount": 1.5,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTA4NzAwMzE2KggIqwISA0VVUjIICL4CEgNFVVI4AUIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiRkMTQwM2Y1Yy01NjNhLTQ3YTYtYWI1MC1iZjM5OGU0NmZmNTkQBFAJcAE="
+                    },
+                    {
+                        "id": "3369c407-4a74-426b-9e84-9aa23282d23d",
+                        "sku": "111650989",
+                        "name": "Bio Kiwi Gold 3 Stk. (Italien)",
+                        "slug": "bio-kiwi-gold-3-stk-italien",
+                        "quantity": 27,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/09fce9d5-f0c3-4999-a314-c75050e65e41.png",
+                        "price": {
+                            "amount": 2.59,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 0.86,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTExNjUwOTg5KggIgwISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokZDE0MDNmNWMtNTYzYS00N2E2LWFiNTAtYmYzOThlNDZmZjU5EARQCnAB"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "19320e7a-c180-4285-ab95-9160c2e78a15",
+            "slug": "obst-trauben-steinobst",
+            "name": "Trauben & Steinobst",
+            "products": {
+                "products": [
+                    {
+                        "id": "c2f6e241-4881-4b6f-b505-34ee5f368f7c",
+                        "sku": "11016610",
+                        "name": "Tafeltrauben Hell Kernlos 500g (Brasilien)",
+                        "slug": "tafeltrauben-hell-kernlos-500g-brasilien",
+                        "quantity": 26,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/d6b61119-cc9e-42e3-9967-6556486502bf.png",
+                        "price": {
+                            "amount": 3.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 6.38,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTY2MTAqCAi/AhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQxOTMyMGU3YS1jMTgwLTQyODUtYWI5NS05MTYwYzJlNzhhMTUQBVABcAE="
+                    }
+                ]
+            }
+        },
+        {
+            "id": "6f01f6d4-8b8e-4058-8fa8-45ad63364a1c",
+            "slug": "obst-zitrusfruechte",
+            "name": "Zitrusfrüchte",
+            "products": {
+                "products": [
+                    {
+                        "id": "a9930fdf-1c54-4e3f-84e7-4d76eb045d83",
+                        "sku": "11016621",
+                        "name": "Bio Zitronen 500g Netz (Italien)",
+                        "slug": "bio-zitronen-500g-netz-italien",
+                        "quantity": 25,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/7098b0ec-0317-4658-8573-bba4d93dde4d.png",
+                        "price": {
+                            "amount": 1.99,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 3.98,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTY2MjEqCAjHARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQ2ZjAxZjZkNC04YjhlLTQwNTgtOGZhOC00NWFkNjMzNjRhMWMQBlABcAE="
+                    },
+                    {
+                        "id": "27d6c980-75ff-4ef3-ab61-5eac40c71d2c",
+                        "sku": "11019164",
+                        "name": "Orange 1,5 kg (Spanien)",
+                        "slug": "orange-1-5-kg-spanien",
+                        "quantity": 8,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/b06379cb-dfe9-45bf-ba59-8b541e2de0aa.png",
+                        "price": {
+                            "amount": 3.39,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 2.26,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTkxNjQqCAjTAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQ2ZjAxZjZkNC04YjhlLTQwNTgtOGZhOC00NWFkNjMzNjRhMWMQBlACcAE="
+                    },
+                    {
+                        "id": "90666788-ec1d-4b22-a90b-5c18ab10a335",
+                        "sku": "11019216",
+                        "name": "Saft Orangen 1,5kg (Spanien)",
+                        "slug": "saft-orangen-1-5kg-spanien",
+                        "quantity": 11,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/fd9770f9-48c1-4836-8e35-ad5d66f63bf6.png",
+                        "price": {
+                            "amount": 4.89,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 3.26,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTkyMTYqCAjoAxIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQ2ZjAxZjZkNC04YjhlLTQwNTgtOGZhOC00NWFkNjMzNjRhMWMQBlADcAE="
+                    },
+                    {
+                        "id": "d1eedbc0-0f15-487f-ba9f-4e2574996cac",
+                        "sku": "11019006",
+                        "name": "Clementinen 1kg (Spanien)",
+                        "slug": "clementinen-1kg-spanien",
+                        "quantity": 6,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/748361b1-6792-4d9f-89e9-c939d6dfcbbd.png",
+                        "price": {
+                            "amount": 2.39,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 2.39,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTkwMDYqCAjvARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQ2ZjAxZjZkNC04YjhlLTQwNTgtOGZhOC00NWFkNjMzNjRhMWMQBlAEcAE="
+                    },
+                    {
+                        "id": "66bc0c86-67f4-4a5e-bd04-67533dc64d0a",
+                        "sku": "110151352",
+                        "name": "Grapefruit Rose 2 Stk. (Spanien)",
+                        "slug": "grapefruit-rose-2-stk-spanien",
+                        "quantity": 3,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/058bed72-3ef6-4243-be7f-0e8fdf926797.png",
+                        "price": {
+                            "amount": 2.59,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 1.3,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTEwMTUxMzUyKggIgwISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokNmYwMWY2ZDQtOGI4ZS00MDU4LThmYTgtNDVhZDYzMzY0YTFjEAZQBXAB"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "001f2aa4-3d3f-4af4-b2f3-1066ff87335e",
+            "slug": "obst-melonen",
+            "name": "Melonen",
+            "products": {
+                "products": [
+                    {
+                        "id": "921f4cb9-3307-4c91-9610-4722a53a8f1d",
+                        "sku": "11011778",
+                        "name": "Honigmelone 1 Stk. (Brasilien)",
+                        "slug": "honigmelone-1-stk-brasilien",
+                        "quantity": 19,
+                        "max_single_order_quantity": 10,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/397a0cd4-57bd-4e4d-823f-1a27d3dd2e1b.png",
+                        "price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "Stk.",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTE3NzgqCAjbARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQwMDFmMmFhNC0zZDNmLTRhZjQtYjJmMy0xMDY2ZmY4NzMzNWUQB1ABcAE="
+                    }
+                ]
+            }
+        },
+        {
+            "id": "16e832ae-de79-4610-977c-5ea342a0ba72",
+            "slug": "obst-snacks",
+            "name": "Snacks",
+            "products": {
+                "products": [
+                    {
+                        "id": "43072134-c34c-4246-99b8-336a00aeb612",
+                        "sku": "11014167",
+                        "name": "Rewe To Go Obst Frucht-Mix 150g",
+                        "slug": "rewe-to-go-obstschale-frucht-mix-150g",
+                        "quantity": 12,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/2643aec3-aff6-41c0-aa5d-210ac478d48a.png",
+                        "price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 14.6,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTQxNjcqCAjbARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQxNmU4MzJhZS1kZTc5LTQ2MTAtOTc3Yy01ZWEzNDJhMGJhNzIQCFABcAE="
+                    },
+                    {
+                        "id": "eb0818aa-199e-4c36-ab61-8d3c6ce4d5e3",
+                        "sku": "11014688",
+                        "name": "Rewe To Go Obst Granatapfelkerne 80g",
+                        "slug": "rewe-to-go-granatapfelkerne-80g",
+                        "quantity": 47,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/bfd41317-a3e9-435d-8385-eb7511bccd78.png",
+                        "price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 27.38,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTQ2ODgqCAjbARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQxNmU4MzJhZS1kZTc5LTQ2MTAtOTc3Yy01ZWEzNDJhMGJhNzIQCFACcAE="
+                    },
+                    {
+                        "id": "f8c65afc-7b99-43df-9e23-8b6b30b2069d",
+                        "sku": "101250025",
+                        "name": "Rewe To Go Obst Sweet Ananas 400g",
+                        "slug": "rewe-to-go-obst-sweet-ananas-400g",
+                        "quantity": 15,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/09536411-d636-4f39-bc8d-e68a4a8b618a.png",
+                        "price": {
+                            "amount": 5.29,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 13.23,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTAxMjUwMDI1KggIkQQSA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMTZlODMyYWUtZGU3OS00NjEwLTk3N2MtNWVhMzQyYTBiYTcyEAhQA3AB"
+                    },
+                    {
+                        "id": "98d0ed2f-1802-401c-abe8-fd99d9d52c94",
+                        "sku": "11014687",
+                        "name": "Rewe To Go Obst Süsse Mango 130g",
+                        "slug": "rewe-to-go-mango-stucke-130g",
+                        "quantity": 6,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/22107b5d-dfd8-4aff-a664-4b611fbc1135.png",
+                        "price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 16.85,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTQ2ODcqCAjbARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQxNmU4MzJhZS1kZTc5LTQ2MTAtOTc3Yy01ZWEzNDJhMGJhNzIQCFAEcAE="
+                    }
+                ]
+            }
+        },
+        {
+            "id": "1c854b06-b4eb-42d3-80e9-18a3e86d4da5",
+            "slug": "obst-trockenfruechte",
+            "name": "Trockenfrüchte",
+            "products": {
+                "products": [
+                    {
+                        "id": "337bda7b-edb5-4995-a798-bc33a9757de6",
+                        "sku": "115751998",
+                        "name": "Rewe Bio Apfelchips 70g",
+                        "slug": "rewe-bio-apfelchips-70g",
+                        "quantity": 2,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/afd7eb6d-8ccf-4ba3-80b9-578e8d9c268b.png",
+                        "price": {
+                            "amount": 2.89,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 41.29,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTE1NzUxOTk4KggIoQISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMWM4NTRiMDYtYjRlYi00MmQzLTgwZTktMThhM2U4NmQ0ZGE1EAlQAXAB"
+                    },
+                    {
+                        "id": "c9fca136-ef16-41a9-b81f-3b9b709eccb3",
+                        "sku": "115951578",
+                        "name": "Rewe Bio Bananenchips gesüßt 300g",
+                        "slug": "rewe-bio-bananenchips-gesut-300g",
+                        "quantity": 7,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/bcd5fb45-e91e-4845-b06b-a6940f8cbd40.png",
+                        "price": {
+                            "amount": 2.89,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 9.63,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTE1OTUxNTc4KggIoQISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMWM4NTRiMDYtYjRlYi00MmQzLTgwZTktMThhM2U4NmQ0ZGE1EAlQAnAB"
+                    },
+                    {
+                        "id": "51fae6da-9039-45b5-b528-1b7d0d61ff72",
+                        "sku": "11016205",
+                        "name": "Seeberger Mangos ungezuckert 100g",
+                        "slug": "seeberger-mangos-ungezuckert-100g",
+                        "quantity": 34,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/45bb4a11-9963-4e0f-a3e8-f6f4d7aba29c.png",
+                        "price": {
+                            "amount": 4.39,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 43.9,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTYyMDUqCAi2AxIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQxYzg1NGIwNi1iNGViLTQyZDMtODBlOS0xOGEzZTg2ZDRkYTUQCVADcAE="
+                    },
+                    {
+                        "id": "db043d68-c624-4a3b-b0d6-863962a89738",
+                        "sku": "115052337",
+                        "name": "Seeberger Mangos ungezuckert 100g x2",
+                        "slug": "seeberger-mangos-ungezuckert-100g-x2",
+                        "quantity": 17,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/9af1e2b7-0104-474b-90be-99e9011db87b.png",
+                        "price": {
+                            "amount": 8.39,
+                            "currency": "EUR",
+                            "discount": {
+                                "original_amount": 8.78,
+                                "percentage": 4
+                            }
+                        },
+                        "base_price": {
+                            "amount": 41.95,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTE1MDUyMzM3KggIxwYSA0VVUjIICO0GEgNFVVI4AUIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQxYzg1NGIwNi1iNGViLTQyZDMtODBlOS0xOGEzZTg2ZDRkYTUQCVAEcAE="
+                    },
+                    {
+                        "id": "750a0613-563e-4cb8-8bfd-9ad03b27efd4",
+                        "sku": "11018575",
+                        "name": "KoRo Bio gefriergetrocknete Erdbeerscheiben 20g",
+                        "slug": "koro-bio-gefriergetrocknete-erdbeerescheiben-20g",
+                        "quantity": 5,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/662cd2d3-7eca-4762-88d0-74433d7d859a.png",
+                        "price": {
+                            "amount": 2.89,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 144.5,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTg1NzUqCAihAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQxYzg1NGIwNi1iNGViLTQyZDMtODBlOS0xOGEzZTg2ZDRkYTUQCVAFcAE="
+                    },
+                    {
+                        "id": "535559d9-0f0a-49b2-a6f8-583a155b7cc2",
+                        "sku": "11012954",
+                        "name": "Datteln 200g (Tunesien)",
+                        "slug": "datteln-200g-tunesien",
+                        "quantity": 22,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/11b32299-c294-484a-a982-be7c121d638e.png",
+                        "price": {
+                            "amount": 2.89,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 14.45,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTI5NTQqCAihAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQxYzg1NGIwNi1iNGViLTQyZDMtODBlOS0xOGEzZTg2ZDRkYTUQCVAGcAE="
+                    },
+                    {
+                        "id": "dc23fda1-0e67-4883-bfbb-a75f589c4fab",
+                        "sku": "115901634",
+                        "name": "Kluth Datteln 200g",
+                        "slug": "kluth-datteln-200g",
+                        "quantity": 9,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/9a7c1386-dc70-4b5a-bd03-e92689e8be41.png",
+                        "price": {
+                            "amount": 2.89,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 14.45,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTE1OTAxNjM0KggIoQISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMWM4NTRiMDYtYjRlYi00MmQzLTgwZTktMThhM2U4NmQ0ZGE1EAlQB3AB"
+                    },
+                    {
+                        "id": "7b30276b-d5f1-407b-8023-fabbb4e22904",
+                        "sku": "115752000",
+                        "name": "Kluth Rosinen Typ Sultana ungeschwefelt 250g",
+                        "slug": "kluth-rosinen-typ-sultana-ungeschwefelt-250g",
+                        "quantity": 11,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/3434e5d8-0c6e-4792-9a35-82a7db8a58d8.png",
+                        "price": {
+                            "amount": 3.39,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 13.56,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTE1NzUyMDAwKggI0wISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMWM4NTRiMDYtYjRlYi00MmQzLTgwZTktMThhM2U4NmQ0ZGE1EAlQCHAB"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "3f2b9e15-4ea0-40b4-834a-8d96723c4560",
+            "slug": "obst-obstkonserven",
+            "name": "Obstkonserven",
+            "products": {
+                "products": [
+                    {
+                        "id": "08cdcbc6-dcbf-484d-a6a2-dc61368ddb66",
+                        "sku": "11013094",
+                        "name": "Rewe Bio Apfelmark 700g",
+                        "slug": "rewe-bio-apfelmark-700g",
+                        "quantity": 19,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/09767409-6cc1-4c59-a069-c39cd5c0df89.png",
+                        "price": {
+                            "amount": 1.59,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 2.27,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTMwOTQqCAifARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClABcAE="
+                    },
+                    {
+                        "id": "b62ad965-c5d4-41c3-9d9d-ce1c61daa302",
+                        "sku": "11015438",
+                        "name": "Odenwald Apfelmus ohne Zuckerzusatz 360g",
+                        "slug": "odenwald-apfelmus-ohne-zucker-370ml",
+                        "quantity": 12,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/f6cbce15-b2e3-4d41-9e4f-d0e187ef0626.png",
+                        "price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 6.08,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTU0MzgqCAjbARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClACcAE="
+                    },
+                    {
+                        "id": "6abb7adf-7489-4a9b-949a-7b4e2f594339",
+                        "sku": "11017501",
+                        "name": "Rewe Beste Wahl 5-Frucht Cocktail 250g",
+                        "slug": "rewe-beste-wahl-5-frucht-cocktail-250g",
+                        "quantity": 4,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/46fadf55-5cc7-49d7-a88a-94312ef97b6a.png",
+                        "price": {
+                            "amount": 2.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 8.76,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTc1MDEqCAjbARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClADcAE="
+                    },
+                    {
+                        "id": "b6c74ea2-7c57-4f58-ac55-9d70becbe220",
+                        "sku": "11017511",
+                        "name": "Rewe Beste Wahl Ananasstücke 142g",
+                        "slug": "rewe-beste-wahl-ananasstucke-142g",
+                        "quantity": 14,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/ff23d43a-873f-4405-94fb-42653bbb9ea2.png",
+                        "price": {
+                            "amount": 1.59,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 11.2,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTc1MTEqCAifARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClAEcAE="
+                    },
+                    {
+                        "id": "16564126-6612-4dc3-9a51-722432f1030f",
+                        "sku": "11017583",
+                        "name": "Rewe Beste Wahl Mandarinen Orangen im eigenen Saft 175g",
+                        "slug": "rewe-mandarinen-orangen-im-eigenen-saft-300g",
+                        "quantity": 14,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/58f36f70-17ef-4221-a3b7-0b207e61e274.png",
+                        "price": {
+                            "amount": 1.79,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 10.23,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTc1ODMqCAizARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClAFcAE="
+                    },
+                    {
+                        "id": "dc304111-63cd-4646-8abb-35d24f5c5411",
+                        "sku": "11017500",
+                        "name": "Rewe Beste Wahl Mango-Schnitten 250g",
+                        "slug": "rewe-beste-wahl-mango-schnitten-250g",
+                        "quantity": 9,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/a8375c04-e500-41b9-8ea0-d381392b96d3.png",
+                        "price": {
+                            "amount": 1.99,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 7.96,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTc1MDAqCAjHARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClAGcAE="
+                    },
+                    {
+                        "id": "375d3c99-08ff-4d0f-93c0-0ffcfea878e6",
+                        "sku": "11017499",
+                        "name": "Rewe Beste Wahl Pfirsiche Halbe Frucht 230ml",
+                        "slug": "rewe-beste-wahl-pfirsiche-halbe-frucht-230ml",
+                        "quantity": 4,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/3f5255ba-645d-44a2-a178-81ed1132ec3c.png",
+                        "price": {
+                            "amount": 2.39,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 10.39,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "l",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTc0OTkqCAjvARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClAHcAE="
+                    },
+                    {
+                        "id": "65a02ed4-9d4c-460d-ac8e-1da57a848672",
+                        "sku": "11017517",
+                        "name": "Rewe Beste Wahl Schattenmorellen 370g",
+                        "slug": "rewe-beste-wahl-schattenmorellen-370g",
+                        "quantity": 7,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/4ed8b257-30a4-4efa-a80b-89d266cfa055.png",
+                        "price": {
+                            "amount": 3.29,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 8.89,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTc1MTcqCAjJAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClAIcAE="
+                    },
+                    {
+                        "id": "1c2e0ad1-5a0e-4c64-a93d-fb7b90b40e4a",
+                        "sku": "11017513",
+                        "name": "Rewe Beste Wahl Wild-Preiselbeeren 212ml",
+                        "slug": "rewe-beste-wahl-wild-preiselbeeren-212ml",
+                        "quantity": 5,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/5b454436-1450-4bbc-bd32-e31259b9e38d.png",
+                        "price": {
+                            "amount": 2.49,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 11.75,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "l",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTc1MTMqCAj5ARIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQzZjJiOWUxNS00ZWEwLTQwYjQtODM0YS04ZDk2NzIzYzQ1NjAQClAJcAE="
+                    }
+                ]
+            }
+        },
+        {
+            "id": "04e3c78b-317c-4164-b34e-bc365e7f5f42",
+            "slug": "obst-tiefkuehl-obst",
+            "name": "Tiefkühl-Obst",
+            "products": {
+                "products": [
+                    {
+                        "id": "16a9aeea-931b-450b-abcf-303e20948a8e",
+                        "sku": "11018153",
+                        "name": "Ja! Beerenmischung 750g",
+                        "slug": "ja-beerenmischung-750g",
+                        "quantity": 8,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_best_price/t_apply_label_frozen/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/65ab2173-1f85-4767-8d2e-c08f1501a736.png",
+                        "price": {
+                            "amount": 2.99,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 3.99,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTgxNTMqCAirAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQwNGUzYzc4Yi0zMTdjLTQxNjQtYjM0ZS1iYzM2NWU3ZjVmNDIQC1ABcAE="
+                    },
+                    {
+                        "id": "f0e587ef-52be-40fe-bef9-825d39efb103",
+                        "sku": "11015028",
+                        "name": "Rewe Bio Naturland Wildheidelbeeren 300g",
+                        "slug": "rewe-bio-heidelbeeren-300g",
+                        "quantity": 6,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_frozen/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/e11f4bb9-61a8-4321-9d96-6330ce9fbe8d.png",
+                        "price": {
+                            "amount": 3.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 10.63,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTUwMjgqCAi/AhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQwNGUzYzc4Yi0zMTdjLTQxNjQtYjM0ZS1iYzM2NWU3ZjVmNDIQC1ACcAE="
+                    },
+                    {
+                        "id": "52a53d8b-5727-40b6-804c-8a787d252314",
+                        "sku": "11017918",
+                        "name": "Rewe Beste Wahl Erdbeeren 500g",
+                        "slug": "rewe-beste-wahl-erdbeeren-500g",
+                        "quantity": 17,
+                        "max_single_order_quantity": 3,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_frozen/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/e77ed0cf-f57e-4478-93b6-3b62790d52c2.png",
+                        "price": {
+                            "amount": 2.79,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 5.58,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTc5MTgqCAiXAhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQwNGUzYzc4Yi0zMTdjLTQxNjQtYjM0ZS1iYzM2NWU3ZjVmNDIQC1ADcAE="
+                    },
+                    {
+                        "id": "abf2aac2-73da-493c-8099-f63b48d58f3c",
+                        "sku": "122752323",
+                        "name": "Rewe Beste Wahl Kultur-Heidelbeeren 500g",
+                        "slug": "rewe-beste-wahl-kultur-heidelbeeren-500g",
+                        "quantity": 1,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_frozen/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/c4e4d4fa-f21d-4cc7-94b5-5da20b334ba2.png",
+                        "price": {
+                            "amount": 3.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 6.38,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTIyNzUyMzIzKggIvwISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMDRlM2M3OGItMzE3Yy00MTY0LWIzNGUtYmMzNjVlN2Y1ZjQyEAtQBHAB"
+                    },
+                    {
+                        "id": "bae78e75-feb6-4d61-a4ba-b92723c7284e",
+                        "sku": "103300399",
+                        "name": "Rewe Beste Wahl Mango in Würfeln 500g",
+                        "slug": "rewe-beste-wahl-mango-in-wurfeln-500g",
+                        "quantity": 7,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_frozen/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/c0645307-0929-47da-b2de-3f6860fbc792.png",
+                        "price": {
+                            "amount": 3.19,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 6.38,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIJMTAzMzAwMzk5KggIvwISA0VVUjIFEgNFVVJCKAokNTAzMWE5NGUtMTNkMi00ZDA4LWI1MTAtYjUyOTlkMWM5OTZkEAFKKAokMDRlM2M3OGItMzE3Yy00MTY0LWIzNGUtYmMzNjVlN2Y1ZjQyEAtQBXAB"
+                    },
+                    {
+                        "id": "1414dafd-f8a9-431c-8d59-4df837a2f1dc",
+                        "sku": "11014246",
+                        "name": "Wholey Bio Açaí Bowl 250g",
+                        "slug": "wholey-acai-bowl-250g",
+                        "quantity": 28,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_frozen/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/2547bea0-f607-480e-9bc1-936363d94fda.png",
+                        "price": {
+                            "amount": 3.79,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 15.16,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTQyNDYqCAj7AhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQwNGUzYzc4Yi0zMTdjLTQxNjQtYjM0ZS1iYzM2NWU3ZjVmNDIQC1AGcAE="
+                    },
+                    {
+                        "id": "93adb13a-db98-402c-bed3-5376aa95f3b4",
+                        "sku": "11015075",
+                        "name": "Wholey Bio Dragon Bowl 250g",
+                        "slug": "wholey-dragon-bowl-250g",
+                        "quantity": 1,
+                        "thumbnail": "https://res.cloudinary.com/goflink/image/upload/t_apply_label_frozen/t_apply_label_bio_2/b_rgb:F8F8F8/w_800,ar_1:1,c_fill,g_south/product-images-prod/18ecce64-1cda-4da7-b880-aa2f315b273a.png",
+                        "price": {
+                            "amount": 3.79,
+                            "currency": "EUR"
+                        },
+                        "base_price": {
+                            "amount": 15.16,
+                            "currency": "EUR"
+                        },
+                        "base_unit": {
+                            "unit": "kg",
+                            "amount": 1
+                        },
+                        "productContext": "CgtkZV9tdWNfYmx1dCIIMTEwMTUwNzUqCAj7AhIDRVVSMgUSA0VVUkIoCiQ1MDMxYTk0ZS0xM2QyLTRkMDgtYjUxMC1iNTI5OWQxYzk5NmQQAUooCiQwNGUzYzc4Yi0zMTdjLTQxNjQtYjM0ZS1iYzM2NWU3ZjVmNDIQC1AHcAE="
+                    }
+                ]
+            }
+        }
+    ]
+}
