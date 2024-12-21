@@ -36,15 +36,23 @@ const OrderList = () => {
 
     if (filters.search) {
       const search = filters.search.toLowerCase();
-      filtered = filtered.filter(
-        (order) =>
-          order._id.includes(search) ||
-          order.userId.email.toLowerCase().includes(search) ||
-          order.userId.name.firstName.toLowerCase().includes(search) ||
-          order.userId.name.lastName.toLowerCase().includes(search) ||
-          order.items.some((item) => item.itemId.includes(search)) ||
-          order.deliveryInfo.address.toLowerCase().includes(search)
-      );
+      filtered = filtered.filter((order) => {
+        const hasMatchingId = order._id.includes(search);
+        const hasMatchingItem = order.items.some((item) =>
+          item.itemId.includes(search)
+        );
+        const hasMatchingAddress = order.deliveryInfo.address
+          ?.toLowerCase()
+          .includes(search);
+
+        const hasMatchingUser =
+          order.userId &&
+          (order.userId.email?.toLowerCase().includes(search) ||
+            order.userId.name?.firstName?.toLowerCase().includes(search) ||
+            order.userId.name?.lastName?.toLowerCase().includes(search));
+
+        return hasMatchingId || hasMatchingItem || hasMatchingAddress || hasMatchingUser;
+      });
     }
 
     if (filters.status) {
@@ -65,8 +73,6 @@ const OrderList = () => {
 
     setFilteredOrders(filtered);
   };
-
-  
 
   return (
     <div className="order-list-container">
@@ -92,10 +98,18 @@ const OrderList = () => {
             {filteredOrders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
-                <td>{`${order.userId.name.firstName} ${order.userId.name.lastName}`}</td>
-                <td>${order.finalAmount.toFixed(2)}</td>
+                <td>
+                  {order.userId
+                    ? `${order.userId.name?.firstName || 'N/A'} ${
+                        order.userId.name?.lastName || ''
+                      }`
+                    : 'Guest'}
+                </td>
+                <td>€{order.finalAmount.toFixed(2)}</td>
                 <td>{order.status}</td>
-                <td>{order.deliveryInfo.type === 'pickup' ? 'Pickup' : 'Delivery'}</td>
+                <td>
+                  {order.deliveryInfo?.type === 'pickup' ? 'Pickup' : 'Delivery'}
+                </td>
                 <td>
                   <button onClick={() => setSelectedOrder(order)}>View</button>
                   <button onClick={() => setEditableOrder(order)}>Edit</button>
@@ -113,7 +127,12 @@ const OrderList = () => {
         />
       )}
 
-      
+      {editableOrder && (
+        <OrderEditModal
+          order={editableOrder}
+          onClose={() => setEditableOrder(null)}
+        />
+      )}
     </div>
   );
 };

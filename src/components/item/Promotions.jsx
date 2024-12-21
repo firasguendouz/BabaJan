@@ -15,7 +15,7 @@ const Promotions = () => {
   useEffect(() => {
     const fetchPromotions = async () => {
       try {
-        const response = await fetch('https://babajan.onrender.com/api/promotions/active'); // Call the active promotions API
+        const response = await fetch('http://localhost:5000/api/promotions/active'); // Call the active promotions API
         const data = await response.json();
         if (response.ok) {
           setPromotions(data.data); // Assuming `data.data` contains the array of promotions

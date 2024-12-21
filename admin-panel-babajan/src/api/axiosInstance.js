@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance with default configuration
 const axiosInstance = axios.create({
-  baseURL: 'https://babajan.onrender.com/api', // Replace with your backend API URL
+  baseURL: 'http://localhost:5000/api', // Replace with your backend API URL
   timeout: 10000, // Request timeout (10 seconds)
 });
 

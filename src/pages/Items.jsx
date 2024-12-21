@@ -18,8 +18,8 @@ const ItemsPage = () => {
     const fetchData = async () => {
       try {
         const [categoriesResponse, itemsResponse] = await Promise.all([
-          axios.get('https://babajan.onrender.com/api/categories'),
-          axios.get('https://babajan.onrender.com/api/items'),
+          axios.get('http://localhost:5000/api/categories'),
+          axios.get('http://localhost:5000/api/items'),
         ]);
 
         setCategories(categoriesResponse.data.data || []);
