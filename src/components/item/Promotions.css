@@ -1,51 +1,89 @@
+/* General Styles */
 .promotions-section {
-    padding: 40px 20px;
-    background-color: #f9f9f9;
-    text-align: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.promotions-section h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Loading & Error States */
+.promo-loading,
+.promo-error {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 20px 0;
+  color: #777;
+}
+
+/* Promotion Card */
+.promotion-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.promotion-card:hover {
+  transform: translateY(-5px);
+}
+
+.promotion-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #007b55;
+}
+
+.promotion-card p {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+/* Promotion Link */
+.promo-link {
+  display: inline-block;
+  color: white;
+  background-color: #007b55;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.promo-link:hover {
+  background-color: #005c41;
+}
+
+/* Swiper Responsiveness */
+@media (min-width: 768px) {
+  .promotions-section {
+    padding: 60px 40px;
   }
-  
-  .promotions-section h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
+
   .promotion-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
+    padding: 25px;
   }
-  
-  .promotion-card:hover {
-    transform: translateY(-5px);
+}
+
+@media (min-width: 1024px) {
+  .promotions-section {
+    padding: 80px 60px;
   }
-  
+
   .promotion-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #007b55;
+    font-size: 1.6rem;
   }
-  
+
   .promotion-card p {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    color: #555;
+    font-size: 1.1rem;
   }
-  
-  .promo-link {
-    color: white;
-    background-color: #007b55;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .promo-link:hover {
-    background-color: #005c41;
-  }
-  
+}

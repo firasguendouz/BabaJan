@@ -9,18 +9,15 @@ const HorizontalMenu = ({ categories, onCategoryClick, onSubcategoryClick }) => 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [isCategoryScrollable, setIsCategoryScrollable] = useState({ left: false, right: true });
-  const [isSubcategoryScrollable, setIsSubcategoryScrollable] = useState({
-    left: false,
-    right: true,
-  });
+  const [isSubcategoryScrollable, setIsSubcategoryScrollable] = useState({ left: false, right: true });
 
+  // Handle Scroll Behavior
   const scrollHandler = (direction, containerRef, setScrollableState) => {
-    const scrollAmount = 150; // Amount to scroll in pixels
+    const scrollAmount = 150;
     if (containerRef.current) {
       const container = containerRef.current;
       container.scrollLeft += direction === 'left' ? -scrollAmount : scrollAmount;
 
-      // Update scrollability states
       setTimeout(() => {
         setScrollableState({
           left: container.scrollLeft > 0,
@@ -30,18 +27,27 @@ const HorizontalMenu = ({ categories, onCategoryClick, onSubcategoryClick }) => 
     }
   };
 
+  // Handle Category Click
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
     setSelectedSubcategory(null); // Reset subcategory selection
-    if (onCategoryClick) {
-      onCategoryClick(categoryId);
-    }
+    onCategoryClick?.(categoryId);
   };
 
+  // Handle Subcategory Click
   const handleSubcategoryClick = (subcategoryId) => {
     setSelectedSubcategory(subcategoryId);
-    if (onSubcategoryClick) {
-      onSubcategoryClick(subcategoryId);
+    onSubcategoryClick?.(subcategoryId);
+  };
+
+  // Check Scrollable State on Scroll
+  const handleScrollState = (containerRef, setScrollableState) => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+      setScrollableState({
+        left: container.scrollLeft > 0,
+        right: container.scrollLeft < container.scrollWidth - container.clientWidth,
+      });
     }
   };
 
@@ -59,15 +65,7 @@ const HorizontalMenu = ({ categories, onCategoryClick, onSubcategoryClick }) => 
         <div
           className="scroll-container"
           ref={categoryScrollRef}
-          onScroll={() => {
-            if (categoryScrollRef.current) {
-              const container = categoryScrollRef.current;
-              setIsCategoryScrollable({
-                left: container.scrollLeft > 0,
-                right: container.scrollLeft < container.scrollWidth - container.clientWidth,
-              });
-            }
-          }}
+          onScroll={() => handleScrollState(categoryScrollRef, setIsCategoryScrollable)}
         >
           {categories.map((category) => (
             <button
@@ -101,22 +99,16 @@ const HorizontalMenu = ({ categories, onCategoryClick, onSubcategoryClick }) => 
           <div
             className="scroll-container"
             ref={subcategoryScrollRef}
-            onScroll={() => {
-              if (subcategoryScrollRef.current) {
-                const container = subcategoryScrollRef.current;
-                setIsSubcategoryScrollable({
-                  left: container.scrollLeft > 0,
-                  right: container.scrollLeft < container.scrollWidth - container.clientWidth,
-                });
-              }
-            }}
+            onScroll={() => handleScrollState(subcategoryScrollRef, setIsSubcategoryScrollable)}
           >
             {categories
               .find((cat) => cat._id === selectedCategory)
               ?.subcategories.map((subcategory) => (
                 <button
                   key={subcategory._id}
-                  className={`subcategory-tab ${selectedSubcategory === subcategory._id ? 'active' : ''}`}
+                  className={`subcategory-tab ${
+                    selectedSubcategory === subcategory._id ? 'active' : ''
+                  }`}
                   onClick={() => handleSubcategoryClick(subcategory._id)}
                 >
                   {subcategory.name}

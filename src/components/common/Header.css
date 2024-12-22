@@ -1,4 +1,4 @@
-/* General Header Styles */
+/* Global Styles for Header */
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -7,8 +7,123 @@
   color: white;
   padding: 16px 24px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1000;
 }
-/* Basket Button Styles */
+
+/* Header Container */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Brand Section */
+.header-brand h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* Navigation Links */
+.header-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #d4f4e3;
+}
+
+/* Logout Button */
+.logout-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.logout-button:hover {
+  color: #d4f4e3;
+}
+
+/* Mobile Menu Toggle Button */
+.header-menu-toggle {
+  display: none;
+}
+
+.menu-button {
+  background-color: white;
+  color: #007b55;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-button:hover {
+  background-color: #005c41;
+  color: white;
+}
+
+/* Responsive Modal Menu */
+@media (max-width: 768px) {
+  .header-nav {
+    display: none;
+  }
+
+  .header-menu-toggle {
+    display: flex;
+  }
+
+  body.menu-open .header-nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #007b55;
+    z-index: 1000;
+    padding: 20px;
+    gap: 16px;
+  }
+
+  body.menu-open .nav-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  body.menu-open .nav-links li a {
+    font-size: 1.2rem;
+  }
+}
+
+/* Basket Button */
 .basket-button {
   background-color: #007b55;
   color: white;
@@ -39,191 +154,4 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.header-brand h1 {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-}
-
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 16px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links li a {
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-.nav-links li a:hover {
-  color: #d4f4e3;
-}
-
-.header-actions {
-  display: flex;
-  gap: 16px;
-}
-
-.menu-button,
-.basket-button,
-.auth-button {
-  background-color: white;
-  color: #007b55;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  font-size: 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.menu-button:hover,
-.basket-button:hover,
-.auth-button:hover {
-  background-color: #005c41;
-  color: white;
-}
-
-/* Item Count Badge */
-.item-count-badge {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #e74c3c;
-  color: white;
-  font-weight: bold;
-  font-size: 0.9rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-left: 8px;
-  position: relative;
-  top: -5px;
-}
-
-/* Modal Menu Styles */
-.menu-modal {
-  position: absolute;
-  top: 60px;
-  right: 16px;
-  background-color: white;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-}
-
-.menu-modal ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.menu-modal ul li {
-  margin-bottom: 8px;
-}
-
-.menu-modal ul li:last-child {
-  margin-bottom: 0;
-}
-
-.menu-modal ul li a {
-  color: #007b55;
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.menu-modal ul li a:hover {
-  text-decoration: underline;
-}
-
-.close-menu-button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  cursor: pointer;
-  margin-top: 12px;
-  font-size: 1rem;
-}
-
-.close-menu-button:hover {
-  background-color: #d32f2f;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-
-  .header-actions {
-    flex-direction: column;
-    gap: 8px;
-  }
-}
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background-color: #007b55;
-  color: white;
-}
-
-.header-brand h1 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.nav-links {
-  display: flex;
-  gap: 16px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: #d4f4e3;
-}
-
-.logout-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.logout-button:hover {
-  color: #d4f4e3;
 }

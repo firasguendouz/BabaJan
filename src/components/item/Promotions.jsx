@@ -15,10 +15,11 @@ const Promotions = () => {
   useEffect(() => {
     const fetchPromotions = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/promotions/active'); // Call the active promotions API
+        const response = await fetch('http://localhost:5000/api/promotions/active');
         const data = await response.json();
+
         if (response.ok) {
-          setPromotions(data.data); // Assuming `data.data` contains the array of promotions
+          setPromotions(data.data || []); // Ensure fallback to empty array
         } else {
           setError(data.message || 'Failed to load promotions');
         }
@@ -33,8 +34,8 @@ const Promotions = () => {
     fetchPromotions();
   }, []);
 
-  if (loading) return <div>Loading promotions...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div className="promo-loading">Loading promotions...</div>;
+  if (error) return <div className="promo-error">Error: {error}</div>;
 
   return (
     <section className="promotions-section">
@@ -42,16 +43,17 @@ const Promotions = () => {
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
-        slidesPerView={2}
+        slidesPerView={1}
         autoplay={{ delay: 4000 }}
         loop={true}
         breakpoints={{
           640: { slidesPerView: 1 },
-          1024: { slidesPerView: 2 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
         }}
       >
         {promotions.map((promo) => (
-          <SwiperSlide key={promo._id.$oid || promo._id}>
+          <SwiperSlide key={promo._id?.$oid || promo._id}>
             <div className="promotion-card">
               <h3>{promo.title}</h3>
               <p>
@@ -59,8 +61,14 @@ const Promotions = () => {
                   ? `${promo.discountValue}% Off`
                   : `Flat €${promo.discountValue} Off`}
               </p>
-              <p>Valid until: {new Date(promo.endDate.$date || promo.endDate).toLocaleDateString()}</p>
-              <a href={`/items?categories=${promo.applicableTo.categories.join(',')}`} className="promo-link">
+              <p>
+                Valid until:{' '}
+                {new Date(promo.endDate?.$date || promo.endDate).toLocaleDateString()}
+              </p>
+              <a
+                href={`/items?categories=${promo.applicableTo.categories.join(',')}`}
+                className="promo-link"
+              >
                 Shop Now
               </a>
             </div>

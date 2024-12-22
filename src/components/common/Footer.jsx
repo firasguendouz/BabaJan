@@ -6,20 +6,30 @@ import React from 'react';
 const Footer = ({ text, links }) => {
   return (
     <footer className="app-footer">
+      {/* Footer Text */}
       <div className="footer-text">
         <p>{text}</p>
       </div>
-      <nav className="footer-nav">
-        <ul>
-          {links.map((link, index) => (
-            <li key={index}>
-              <a href={link.href} target="_blank" rel="noopener noreferrer">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+
+      {/* Footer Navigation */}
+      {links.length > 0 && (
+        <nav className="footer-nav" aria-label="Footer Navigation">
+          <ul>
+            {links.map((link, index) => (
+              <li key={index}>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </footer>
   );
 };

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import React from 'react';
-import { logout } from '../../state/userSlice'; // Redux logout action
+import { logout } from '../../state/userSlice';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -60,6 +60,17 @@ const Header = () => {
             )}
           </ul>
         </nav>
+
+        {/* Responsive Menu for Mobile */}
+        <div className="header-menu-toggle">
+          <button
+            aria-label="Toggle navigation menu"
+            className="menu-button"
+            onClick={() => document.body.classList.toggle('menu-open')}
+          >
+            ☰
+          </button>
+        </div>
       </div>
     </header>
   );

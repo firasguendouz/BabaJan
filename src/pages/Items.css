@@ -1,27 +1,93 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Items Page Layout */
 .items-page {
-  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.filters {
+/* Title */
+.items-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #2e7d32;
+}
+
+/* Loading & Error States */
+.items-loading,
+.items-error {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 20px 0;
+  color: #777;
+}
+
+/* Filters Section */
+.items-filters {
   display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
   gap: 16px;
-  margin-bottom: 16px;
-  align-items: center;
 }
 
+/* Filters Input */
 .search-input {
   flex: 1;
-  padding: 8px;
+  padding: 10px;
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
 .category-select {
-  padding: 8px;
+  padding: 10px;
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #fff;
   cursor: pointer;
+}
+
+/* Items List */
+.items-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Empty State */
+.items-empty {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .items-title {
+    font-size: 1.8rem;
+  }
+
+  .items-filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .items-title {
+    font-size: 1.5rem;
+  }
 }

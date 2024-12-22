@@ -1,3 +1,5 @@
+import './Items.css';
+
 import React, { useEffect, useState } from 'react';
 
 import HorizontalMenu from '../components/item/HorizontalMenu';
@@ -13,7 +15,7 @@ const ItemsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Fetch data on mount
+  // Fetch categories and items on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,68 +38,74 @@ const ItemsPage = () => {
     fetchData();
   }, []);
 
-  // Filter items based on selected category or subcategory
+  // Filter items based on category or subcategory
   useEffect(() => {
+    let filtered = items;
+
     if (selectedSubcategory) {
-      setFilteredItems(
-        items.filter((item) => item.subcategory === selectedSubcategory)
-      );
+      filtered = items.filter((item) => item.subcategory === selectedSubcategory);
     } else if (selectedCategory) {
-      setFilteredItems(
-        items.filter((item) => item.category === selectedCategory)
-      );
-    } else {
-      setFilteredItems(items);
+      filtered = items.filter((item) => item.category === selectedCategory);
     }
+
+    setFilteredItems(filtered);
   }, [selectedCategory, selectedSubcategory, items]);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
-    setSelectedSubcategory(null); // Reset subcategory when category is selected
+    setSelectedSubcategory(null); // Reset subcategory when selecting a new category
   };
 
   const handleSubcategoryClick = (subcategoryId) => {
     setSelectedSubcategory(subcategoryId);
   };
 
-  if (loading) return <div>Loading items...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div className="items-loading">Loading items...</div>;
+  if (error) return <div className="items-error">{error}</div>;
+
+  const pageTitle = selectedSubcategory
+    ? `Products in ${
+        categories
+          .flatMap((cat) => cat.subcategories)
+          .find((sub) => sub._id === selectedSubcategory)?.name || 'Subcategory'
+      }`
+    : selectedCategory
+    ? `Products in ${
+        categories.find((cat) => cat._id === selectedCategory)?.title || 'Category'
+      }`
+    : 'Our Products';
 
   return (
-    <div>
-      <h1>
-        {selectedSubcategory
-          ? `Products in ${categories
-              .flatMap((cat) => cat.subcategories)
-              .find((sub) => sub._id === selectedSubcategory)?.name || 'Subcategory'}`
-          : selectedCategory
-          ? `Products in ${categories.find((cat) => cat._id === selectedCategory)?.title || 'Category'}`
-          : 'Our Products'}
-      </h1>
+    <main className="items-page">
+      <h1 className="items-title">{pageTitle}</h1>
 
-      {/* Horizontal menu for categories and subcategories */}
-      <HorizontalMenu
-        categories={categories.map((cat) => ({
-          ...cat,
-          subcategories: cat.subcategories.map((sub) => ({
-            _id: sub._id,
-            name: sub.name,
-          })),
-        }))}
-        onCategoryClick={handleCategoryClick}
-        onSubcategoryClick={handleSubcategoryClick}
-      />
-
-      {/* Item list */}
-      {filteredItems.length > 0 ? (
-        <ItemList
-          items={filteredItems}
-          onItemClick={(id) => console.log(`Clicked item: ${id}`)}
+      {/* Filters Section */}
+      <div className="items-filters">
+        <HorizontalMenu
+          categories={categories.map((cat) => ({
+            ...cat,
+            subcategories: cat.subcategories.map((sub) => ({
+              _id: sub._id,
+              name: sub.name,
+            })),
+          }))}
+          onCategoryClick={handleCategoryClick}
+          onSubcategoryClick={handleSubcategoryClick}
         />
-      ) : (
-        <div>No items found in this category or subcategory.</div>
-      )}
-    </div>
+      </div>
+
+      {/* Item List */}
+      <div className="items-list">
+        {filteredItems.length > 0 ? (
+          <ItemList
+            items={filteredItems}
+            onItemClick={(id) => console.log(`Clicked item: ${id}`)}
+          />
+        ) : (
+          <div className="items-empty">No items found in this category or subcategory.</div>
+        )}
+      </div>
+    </main>
   );
 };
 

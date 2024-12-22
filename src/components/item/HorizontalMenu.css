@@ -1,7 +1,9 @@
+/* General Menu Styles */
 .horizontal-menu {
   margin: 20px 0;
 }
 
+/* Menu Containers */
 .category-menu,
 .subcategory-menu {
   display: flex;
@@ -10,6 +12,7 @@
   margin-bottom: 10px;
 }
 
+/* Scrollable Container */
 .scroll-container {
   display: flex;
   overflow-x: auto;
@@ -17,8 +20,11 @@
   padding: 10px 0;
   scroll-behavior: smooth;
   width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: #007b55 #f0f0f0;
 }
 
+/* Scroll Arrows */
 .scroll-arrow {
   background-color: #007b55;
   color: white;
@@ -29,12 +35,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 .scroll-arrow.hidden {
   visibility: hidden;
 }
 
+/* Category & Subcategory Tabs */
 .category-tab,
 .subcategory-tab {
   background-color: white;
@@ -44,6 +52,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .category-tab.active,
@@ -56,4 +65,13 @@
 .subcategory-tab:hover {
   background-color: #005c41;
   color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .category-tab,
+  .subcategory-tab {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
 }
