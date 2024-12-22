@@ -87,9 +87,11 @@ const ItemScreen = () => {
       />
       <MenuActions setEditProduct={setEditProduct} />
       <ProductsList
-        products={filteredProducts}
-        onProductClick={setViewProduct} // Pass the click handler
-      />
+  products={filteredProducts}
+  onProductClick={setViewProduct}
+  onEditProduct={setEditProduct} // Ensure this is passed
+/>
+
       {viewProduct && (
         <ProductViewModal
           product={viewProduct}

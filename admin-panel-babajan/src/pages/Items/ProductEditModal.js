@@ -22,7 +22,7 @@ const ProductEditModal = ({ product = {}, onClose, onSave }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://babajan.onrender.com/api/categories', {
+        const response = await fetch('http://localhost:5000/api/categories', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

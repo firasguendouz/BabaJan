@@ -57,7 +57,7 @@ const ItemSchema = new mongoose.Schema({
   },
   subcategory: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Subcategory', // Reference to the Subcategory model
+    ref: 'Category.subcategories', // Reference to the Subcategory model
     required: true,
   },
   subcategoryName: {

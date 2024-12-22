@@ -88,7 +88,9 @@ export const deleteItem = async (categoryId, subcategoryId, itemId) => {
 
 // Fetch all categories
 export const fetchCategories = async () => {
-  return axiosInstance.get('/categories');
+  const response = await axiosInstance.get('/categories');
+  return response.data?.data || []; // Ensure it always returns an array
+
 };
 
 // Add a new category

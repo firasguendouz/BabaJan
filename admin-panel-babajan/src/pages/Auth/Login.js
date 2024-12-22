@@ -1,9 +1,9 @@
 import './Login.css';
-
 import React, { useState } from 'react';
-
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+// Import the loginAdmin API
+import { loginAdmin } from '../../api/adminApi';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,16 +13,18 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/login', { email, password });
+      const response = await loginAdmin({ email, password });
       const { token } = response.data;
 
-      // Save token to localStorage
+      // Save token securely
       localStorage.setItem('authToken', token);
 
       // Redirect to the dashboard
       navigate('/');
     } catch (err) {
+      console.error('Login Error:', err);
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     }
   };
