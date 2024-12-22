@@ -26,12 +26,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      validate: {
-        validator: function (phone) {
-          return /^\+49\d{10}$/.test(phone); // Validates German phone numbers starting with +49
-        },
-        message: 'Invalid German phone number (must start with +49 and have 10 digits after).',
-      },
+      
     },
     password: {
       type: String,

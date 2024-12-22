@@ -8,11 +8,6 @@ const OrderAuditSchema = new mongoose.Schema(
       ref: 'Order',
       required: true,
     },
-    adminId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Reference to the admin making the change
-      required: true,
-    },
     action: {
       type: String,
       required: true,

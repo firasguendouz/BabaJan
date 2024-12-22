@@ -72,7 +72,6 @@ const UserViewModal = ({ user, onClose }) => {
           <h4>Additional Info:</h4>
           <p><strong>Login Attempts:</strong> {user.loginAttempts}</p>
           <p><strong>Permissions:</strong> {user.permissions.join(', ') || 'None'}</p>
-          <p><strong>Preferences:</strong> {Object.keys(user.preferences).length > 0 ? JSON.stringify(user.preferences) : 'None'}</p>
         </div>
       </div>
     </div>

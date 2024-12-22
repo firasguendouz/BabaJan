@@ -6,23 +6,35 @@ import { fetchItems } from '../../api/adminApi';
 
 const OrderEditModal = ({ order, onSave, onClose }) => {
   const [formData, setFormData] = useState({
-    items: [...order.items],
-    discountAmount: order.discountAmount,
-    status: order.status,
-    paymentDetails: { ...order.paymentDetails },
-    deliveryInfo: { ...order.deliveryInfo },
+    _id: order?._id || order?.id || '',
+    items:
+      order?.items?.map((item) => ({
+        ...item,
+        price: Number(item.price) || 0,
+        total: Number(item.total) || 0,
+      })) || [],
+    discountAmount: Number(order?.discountAmount) || 0,
+    status: order?.status || 'pending',
+    paymentDetails: { ...order?.paymentDetails } || {},
+    deliveryInfo: { ...order?.deliveryInfo } || {},
   });
 
-  const [allItems, setAllItems] = useState([]); // List of all available items
+  const [allItems, setAllItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  //
+  // ==================== FETCH AVAILABLE ITEMS ====================
+  //
   useEffect(() => {
-    // Fetch available items
     const fetchAvailableItems = async () => {
       try {
         setLoading(true);
-        const response = await fetchItems({}); // Fetch all items
-        setAllItems(response.data.data); // Store fetched items
+        const response = await fetchItems({});
+        const sanitizedItems = response.data.data.map((item) => ({
+          ...item,
+          price: Number(item.price) || 0,
+        }));
+        setAllItems(sanitizedItems);
       } catch (error) {
         console.error('Error fetching items:', error);
       } finally {
@@ -33,6 +45,9 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
     fetchAvailableItems();
   }, []);
 
+  //
+  // ==================== HANDLE FIELD CHANGES ====================
+  //
   const handleFieldChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -41,18 +56,20 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
   };
 
   const handleItemChange = (index, field, value) => {
-    const updatedItems = [...formData.items];
-    updatedItems[index] = { ...updatedItems[index], [field]: value };
+    setFormData((prev) => {
+      const updatedItems = [...prev.items];
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [field]: value,
+      };
 
-    if (field === 'quantity') {
-      updatedItems[index].total =
-        updatedItems[index].price * (parseInt(value, 10) || 0);
-    }
+      if (field === 'quantity') {
+        updatedItems[index].total =
+          Number(updatedItems[index].price) * (parseInt(value, 10) || 0);
+      }
 
-    setFormData((prev) => ({
-      ...prev,
-      items: updatedItems,
-    }));
+      return { ...prev, items: updatedItems };
+    });
   };
 
   const handleAddItem = (itemId) => {
@@ -64,11 +81,11 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
           ...prev.items,
           {
             itemId: selectedItem._id,
-            name: selectedItem.name.en, // Assuming 'en' for English
-            unit: selectedItem.unit,
-            price: selectedItem.price,
+            name: selectedItem.name?.en || 'Unnamed Item',
+            unit: selectedItem.unit || 'unit',
+            price: Number(selectedItem.price) || 0,
             quantity: 1,
-            total: selectedItem.price,
+            total: Number(selectedItem.price) || 0,
           },
         ],
       }));
@@ -76,25 +93,43 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
   };
 
   const handleRemoveItem = (index) => {
-    const updatedItems = formData.items.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, items: updatedItems }));
+    setFormData((prev) => ({
+      ...prev,
+      items: prev.items.filter((_, i) => i !== index),
+    }));
   };
 
+  //
+  // ==================== HANDLE SAVE ====================
+  //
   const handleSave = () => {
-    // Validate items
-    const invalidItems = formData.items.some(
-      (item) => !item.itemId || !item.name || !item.unit
-    );
+    const orderId = formData._id || formData.id;
 
-    if (invalidItems) {
-      alert('Each item must have an item ID, name, and unit.');
+    if (!orderId) {
+      console.error('Order ID is missing!');
+      alert('Order ID is missing. Please refresh and try again.');
       return;
     }
 
-    // Call the onSave handler with valid form data
-    onSave(formData);
+    // Ensure required fields are populated
+    if (!formData.status) {
+      alert('Order status is required.');
+      return;
+    }
+
+    if (onSave && typeof onSave === 'function') {
+      onSave({
+        ...formData,
+        _id: orderId,
+      });
+    } else {
+      console.warn('onSave is not a valid function.');
+    }
   };
 
+  //
+  // ==================== RENDER COMPONENT ====================
+  //
   return (
     <div className="modal">
       <div className="modal-content">
@@ -109,7 +144,7 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
             <label>
               Payment Method:
               <select
-                value={formData.paymentDetails.method}
+                value={formData.paymentDetails?.method || ''}
                 onChange={(e) =>
                   handleFieldChange('paymentDetails', {
                     ...formData.paymentDetails,
@@ -125,11 +160,11 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
             </label>
             <p>
               <strong>Transaction ID:</strong>{' '}
-              {formData.paymentDetails.transactionId || 'N/A'}
+              {formData.paymentDetails?.transactionId || 'N/A'}
             </p>
             <p>
               <strong>Paid At:</strong>{' '}
-              {formData.paymentDetails.paidAt || 'Not Paid'}
+              {formData.paymentDetails?.paidAt || 'Not Paid'}
             </p>
           </fieldset>
 
@@ -139,7 +174,7 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
             <label>
               Delivery Type:
               <select
-                value={formData.deliveryInfo.type}
+                value={formData.deliveryInfo?.type || ''}
                 onChange={(e) =>
                   handleFieldChange('deliveryInfo', {
                     ...formData.deliveryInfo,
@@ -155,40 +190,14 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
               Address:
               <input
                 type="text"
-                value={formData.deliveryInfo.address}
+                value={formData.deliveryInfo?.address || ''}
                 onChange={(e) =>
                   handleFieldChange('deliveryInfo', {
                     ...formData.deliveryInfo,
                     address: e.target.value,
                   })
                 }
-                disabled={formData.deliveryInfo.type === 'pickup'}
-              />
-            </label>
-            <label>
-              Scheduled At:
-              <input
-                type="datetime-local"
-                value={formData.deliveryInfo.scheduledAt}
-                onChange={(e) =>
-                  handleFieldChange('deliveryInfo', {
-                    ...formData.deliveryInfo,
-                    scheduledAt: e.target.value,
-                  })
-                }
-              />
-            </label>
-            <label>
-              Delivered At:
-              <input
-                type="datetime-local"
-                value={formData.deliveryInfo.deliveredAt || ''}
-                onChange={(e) =>
-                  handleFieldChange('deliveryInfo', {
-                    ...formData.deliveryInfo,
-                    deliveredAt: e.target.value,
-                  })
-                }
+                disabled={formData.deliveryInfo?.type === 'pickup'}
               />
             </label>
           </fieldset>
@@ -198,29 +207,19 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
             <legend>Items</legend>
             {formData.items.map((item, index) => (
               <div key={index} className="item-edit-block">
-                <p>
-                  <strong>Item ID:</strong> {item.itemId}
-                </p>
-                <p>
-                  <strong>Name:</strong> {item.name}
-                </p>
-                <p>
-                  <strong>Unit:</strong> {item.unit}
-                </p>
-                <p>
-                  <strong>Price:</strong> ${item.price.toFixed(2)}
-                </p>
+                <p><strong>Item ID:</strong> {item.itemId}</p>
+                <p><strong>Name:</strong> {item.name}</p>
+                <p><strong>Unit:</strong> {item.unit}</p>
+                <p><strong>Price:</strong> €{Number(item.price).toFixed(2)}</p>
                 <label>
                   Quantity:
                   <input
                     type="number"
                     value={item.quantity}
-                    onChange={(e) =>
-                      handleItemChange(index, 'quantity', e.target.value)
-                    }
+                    onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
                   />
                 </label>
-                <p>Total: ${item.total.toFixed(2)}</p>
+                <p>Total: €{Number(item.total).toFixed(2)}</p>
                 <button type="button" onClick={() => handleRemoveItem(index)}>
                   Remove Item
                 </button>
@@ -228,36 +227,15 @@ const OrderEditModal = ({ order, onSave, onClose }) => {
             ))}
             <div>
               <label>Add Item:</label>
-              <select
-                onChange={(e) => handleAddItem(e.target.value)}
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Select an item
-                </option>
+              <select onChange={(e) => handleAddItem(e.target.value)} defaultValue="">
+                <option value="" disabled>Select an item</option>
                 {allItems.map((item) => (
                   <option key={item._id} value={item._id}>
-                    {item.name.en} - ${item.price.toFixed(2)}
+                    {item.name?.en} - €{Number(item.price).toFixed(2)}
                   </option>
                 ))}
               </select>
             </div>
-          </fieldset>
-
-          {/* Order Status */}
-          <fieldset>
-            <legend>Status</legend>
-            <select
-              value={formData.status}
-              onChange={(e) => handleFieldChange('status', e.target.value)}
-            >
-              <option value="pending">Pending</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="prepared">Prepared</option>
-              <option value="shipped">Shipped</option>
-              <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
           </fieldset>
 
           <button type="button" onClick={handleSave} disabled={loading}>

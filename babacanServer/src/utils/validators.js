@@ -10,9 +10,7 @@ validators.validateRegistration = (data) => {
       lastName: Joi.string().required(),
     }).required(),
     email: Joi.string().email().required(),
-    phone: Joi.string().pattern(/^\+49\d{10}$/).required().messages({
-      'string.pattern.base': 'Phone number must be a valid German number (+49XXXXXXXXXX).',
-    }),
+    phone: Joi.string().required(),
     password: Joi.string().min(6).required(),
   });
   return schema.validate(data);

@@ -8,6 +8,7 @@ router.get('/', verifyToken, notificationController.getAuthenticatedUserNotifica
 router.patch('/:notificationId/read', verifyToken, notificationController.markAsRead);
 router.patch('/read-all', verifyToken, notificationController.markAllAsRead);
 router.delete('/:notificationId', verifyToken, notificationController.deleteNotification);
+router.get('/unread-count', verifyToken, notificationController.getUnreadCount);
 
 // Admin-only Routes
 router.get('/user/:recipientId', verifyToken, verifyAdmin, notificationController.getUserNotifications);

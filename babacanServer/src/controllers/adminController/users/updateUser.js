@@ -1,37 +1,37 @@
 const User = require('../../../models/User');
-const { handleError } = require('../../../middleware/errorHandler');
+const bcrypt = require('bcryptjs');
 
-// Update user details with restrictions
+// Update User Information
 exports.updateUser = async (req, res) => {
   const { userId } = req.params;
   const updateData = req.body;
 
   try {
-    // Find the user by ID
     const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
 
-    // Prevent unauthorized role escalation
+    // Prevent unauthorized role updates
     if (updateData.role && req.user.role !== 'super-admin') {
-      return res
-        .status(403)
-        .json({ success: false, message: 'Only super-admins can update user roles' });
+      return res.status(403).json({ success: false, message: 'Only Super Admins can update user roles.' });
     }
 
-    // Prevent certain fields from being updated
+    // Prevent critical fields from being updated
     const restrictedFields = ['email', 'createdAt', 'lastLogin', 'isDeleted'];
-    restrictedFields.forEach((field) => delete updateData[field]);
+    restrictedFields.forEach(field => delete updateData[field]);
 
-    // Update user fields
-    if (req.body.password) {
-      // Hash the password only if provided
-      user.password = await bcrypt.hash(req.body.password, 10);
+    // Update password if provided
+    if (updateData.password) {
+      updateData.password = await bcrypt.hash(updateData.password, 10);
     }
+
     Object.assign(user, updateData);
     await user.save();
 
-    res.status(200).json({ success: true, message: 'User updated successfully', data: user });
-  } catch (err) {
-    handleError(res, err);
+    res.status(200).json({ success: true, message: 'User updated successfully.', data: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Failed to update user information.' });
   }
 };

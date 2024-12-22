@@ -1,37 +1,26 @@
 // controllers/admin/orders/createOrder.js
-
 const Order = require('../../models/Order');
 const User = require('../../models/User');
-const { validatePhoneNumber } = require('./orderUtils');
+const { validatePhoneNumber, saveOrder, logInfo, logError } = require('./utils/orderUtils');
 const { handleError } = require('../../middleware/errorHandler');
 
 exports.createOrder = async (req, res) => {
   try {
     const { lines, shipping_address, shipping_info } = req.body;
+    logInfo('Creating new order', { userId: req.user._id });
 
     if (!lines || !shipping_address || !shipping_info) {
       return res.status(400).json({ success: false, message: 'Missing required fields.' });
     }
 
-    const userId = req.user._id;
-    const user = await User.findById(userId);
+    const user = await User.findById(req.user._id);
     if (!user) {
-      return res.status(404).json({ success: false, message: `User not found.${userId}` });
+      return res.status(404).json({ success: false, message: 'User not found.' });
     }
 
-    let phone = user.phone;
-    if (!phone) {
-      if (!req.body.phone) {
-        return res.status(400).json({ success: false, message: 'Phone number is required.' });
-      }
-
-      if (!validatePhoneNumber(req.body.phone)) {
-        return res.status(400).json({ success: false, message: 'Invalid phone number format.' });
-      }
-
-      phone = req.body.phone;
-      user.phone = phone;
-      await user.save();
+    const phone = user.phone || req.body.phone;
+    if (!validatePhoneNumber(phone)) {
+      return res.status(400).json({ success: false, message: 'Invalid phone number format.' });
     }
 
     const orderNumber = `ORD-${phone}-${Date.now()}`;
@@ -45,15 +34,14 @@ exports.createOrder = async (req, res) => {
       lines,
       shipping_address,
       shipping_info,
-      hub_details: { slug: 'default-hub', city: 'Default City', country: 'Default Country' },
-      userId,
+      userId: req.user._id,
     });
 
-    await newOrder.save();
+    await saveOrder(newOrder);
 
     res.status(201).json({ success: true, message: 'Order created successfully.', data: newOrder });
   } catch (err) {
-    console.error('Order creation failed:', err);
+    logError('Order creation failed', { error: err.message });
     handleError(res, err);
   }
 };

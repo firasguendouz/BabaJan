@@ -1,28 +1,32 @@
 import './OrderList.css';
 
 import React, { useEffect, useState } from 'react';
+import { fetchOrders, updateOrder } from '../../api/adminApi';
 
 import OrderDetailsModal from './OrderDetailsModal';
 import OrderEditModal from './OrderEditModal';
 import OrderFilters from './OrderFilters';
-import { fetchOrders } from '../../api/adminApi';
 
 const OrderList = () => {
-  const [orders, setOrders] = useState([]);
-  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [orders, setOrders] = useState([]); // All orders
+  const [filteredOrders, setFilteredOrders] = useState([]); // Filtered orders for display
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [editableOrder, setEditableOrder] = useState(null);
 
+  //
+  // ==================== FETCH ORDERS ====================
+  //
   useEffect(() => {
     const fetchOrderData = async () => {
       setLoading(true);
       try {
         const response = await fetchOrders();
         setOrders(response.data.data);
-        setFilteredOrders(response.data.data); // Initialize with all orders
+        setFilteredOrders(response.data.data); // Initialize filtered orders
       } catch (error) {
         console.error('Error fetching orders:', error);
+        alert('Failed to load orders. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -31,17 +35,66 @@ const OrderList = () => {
     fetchOrderData();
   }, []);
 
+//
+// ==================== HANDLE ORDER SAVE ====================
+//
+const handleSaveOrder = async (updatedOrder) => {
+  try {
+    const orderId = updatedOrder._id || updatedOrder.id;
+
+    if (!orderId) {
+      console.error('Invalid Order ID:', updatedOrder);
+      alert('Invalid order data. Please refresh and try again.');
+      return;
+    }
+
+    setLoading(true);
+
+    // Make an API call to update the order
+    const response = await updateOrder(orderId, updatedOrder);
+    const savedOrder = response.data.data;
+
+    // Update the order in the local state
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        (order._id || order.id) === savedOrder._id ? savedOrder : order
+      )
+    );
+
+    setFilteredOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        (order._id || order.id) === savedOrder._id ? savedOrder : order
+      )
+    );
+
+    setEditableOrder(null); // Close modal
+    alert('Order updated successfully.');
+  } catch (error) {
+    console.error('Error saving order:', error);
+    alert(
+      error.response?.data?.message || 'Failed to save order. Please try again.'
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+  //
+  // ==================== APPLY FILTERS ====================
+  //
   const applyFilters = (filters) => {
     let filtered = [...orders];
 
     if (filters.search) {
       const search = filters.search.toLowerCase();
       filtered = filtered.filter((order) => {
-        const hasMatchingId = order._id.includes(search);
-        const hasMatchingItem = order.items.some((item) =>
-          item.itemId.includes(search)
+        const hasMatchingId = order._id?.includes(search);
+        const hasMatchingItem = order.items?.some((item) =>
+          item.itemId?.includes(search)
         );
-        const hasMatchingAddress = order.deliveryInfo.address
+        const hasMatchingAddress = order.deliveryInfo?.address
           ?.toLowerCase()
           .includes(search);
 
@@ -61,7 +114,7 @@ const OrderList = () => {
 
     if (filters.deliveryType) {
       filtered = filtered.filter(
-        (order) => order.deliveryInfo.type === filters.deliveryType
+        (order) => order.deliveryInfo?.type === filters.deliveryType
       );
     }
 
@@ -74,12 +127,17 @@ const OrderList = () => {
     setFilteredOrders(filtered);
   };
 
+  //
+  // ==================== COMPONENT RETURN ====================
+  //
   return (
     <div className="order-list-container">
       <h2>Order Management</h2>
 
+      {/* Filter Component */}
       <OrderFilters onFiltersChange={applyFilters} />
 
+      {/* Loading State */}
       {loading ? (
         <p>Loading orders...</p>
       ) : (
@@ -105,7 +163,7 @@ const OrderList = () => {
                       }`
                     : 'Guest'}
                 </td>
-                <td>€{order.finalAmount.toFixed(2)}</td>
+                <td>€{Number(order.finalAmount || 0).toFixed(2)}</td>
                 <td>{order.status}</td>
                 <td>
                   {order.deliveryInfo?.type === 'pickup' ? 'Pickup' : 'Delivery'}
@@ -120,6 +178,7 @@ const OrderList = () => {
         </table>
       )}
 
+      {/* Order Details Modal */}
       {selectedOrder && (
         <OrderDetailsModal
           order={selectedOrder}
@@ -127,10 +186,12 @@ const OrderList = () => {
         />
       )}
 
-      {editableOrder && (
+      {/* Order Edit Modal */}
+      {editableOrder && editableOrder._id && (
         <OrderEditModal
           order={editableOrder}
           onClose={() => setEditableOrder(null)}
+          onSave={handleSaveOrder}
         />
       )}
     </div>

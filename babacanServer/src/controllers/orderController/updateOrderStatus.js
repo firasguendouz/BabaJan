@@ -1,15 +1,15 @@
 // controllers/admin/orders/updateOrderStatus.js
-
 const Order = require('../../models/Order');
 const { handleError } = require('../../middleware/errorHandler');
+const { isValidOrderStatus, saveOrder, logInfo, logError } = require('./orderUtils');
 
 exports.updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
+    logInfo('Updating order status', { orderId: id, status });
 
-    const validStatuses = ['STATE_PENDING', 'STATE_DELIVERED', 'STATE_CANCELLED'];
-    if (!validStatuses.includes(status)) {
+    if (!isValidOrderStatus(status)) {
       return res.status(400).json({ success: false, message: 'Invalid status value.' });
     }
 
@@ -20,11 +20,11 @@ exports.updateOrderStatus = async (req, res) => {
 
     order.status = status;
     order.events.push({ status, duration: 0 });
-    await order.save();
+    await saveOrder(order);
 
     res.status(200).json({ success: true, message: 'Order status updated.', data: order });
   } catch (err) {
-    console.error('Error updating status:', err.message);
+    logError('Error updating order status', { error: err.message });
     handleError(res, err);
   }
 };

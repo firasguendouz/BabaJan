@@ -4,6 +4,7 @@ const { getUserNotifications } = require('./getUserNotifications');
 const { markAsRead } = require('./markAsRead');
 const { deleteNotification } = require('./deleteNotification');
 const { createNotification } = require('./createNotification');
+const { getUnreadCount } = require('./getUnreadCount');
 
 module.exports = {
   getAuthenticatedUserNotifications,
@@ -11,5 +12,6 @@ module.exports = {
   getUserNotifications,
   markAsRead,
   deleteNotification,
+  getUnreadCount,
   createNotification,
 };
