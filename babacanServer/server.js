@@ -4,17 +4,40 @@ const connectDB = require('./src/config/db');
 const loadEnv = require('./src/config/env');
 const startTelegramBot = require('./src/config/telegramBot');
 const colors = require('colors');
+const winston = require('winston');
 
-// Load Environment Variables
+// Logger Configuration
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      )
+    }),
+    new winston.transports.File({ filename: 'server.log' })
+  ]
+});
+
+// Load and Validate Environment Variables
 loadEnv();
+if (!process.env.PORT || !process.env.DB_URI) {
+  logger.error('Missing required environment variables. Please check your configuration.');
+  process.exit(1);
+}
 
 // Connect to the Database
 (async () => {
   try {
     await connectDB();
-    console.log(colors.green('Database connected successfully.'));
+    logger.info('Database connected successfully.');
   } catch (err) {
-    console.error(colors.red(`Database connection error: ${err.message}`));
+    logger.error(`Database connection error: ${err.message}`);
     process.exit(1);
   }
 })();
@@ -23,9 +46,9 @@ loadEnv();
 (async () => {
   try {
     await startTelegramBot();
-    console.log(colors.green('Telegram Bot started successfully.'));
+    logger.info('Telegram Bot started successfully.');
   } catch (err) {
-    console.error(colors.red(`Telegram Bot error: ${err.message}`));
+    logger.error(`Telegram Bot error: ${err.message}`);
   }
 })();
 
@@ -37,26 +60,41 @@ const PORT = process.env.PORT || 5000;
 
 // Start the Server
 server.listen(PORT, () => {
-  console.log(colors.blue(`Server running on port ${PORT}`));
+  logger.info(`Server running on port ${PORT}`);
 });
 
 // Handle Uncaught Exceptions
 process.on('uncaughtException', (err) => {
-  console.error(colors.red(`Uncaught Exception: ${err.message}`));
+  logger.error(`Uncaught Exception: ${err.message}`);
+  logger.debug(err.stack);
   process.exit(1);
 });
 
 // Handle Unhandled Promise Rejections
 process.on('unhandledRejection', (err) => {
-  console.error(colors.red(`Unhandled Rejection: ${err.message}`));
+  logger.error(`Unhandled Rejection: ${err.message}`);
+  logger.debug(err.stack);
   server.close(() => process.exit(1));
 });
 
 // Graceful Shutdown
-process.on('SIGINT', () => {
-  console.log(colors.yellow('Shutting down gracefully...'));
-  server.close(() => {
-    console.log(colors.yellow('Server shut down.'));
+process.on('SIGINT', async () => {
+  logger.warn('Shutting down gracefully...');
+  try {
+    // Ensure all services are closed properly
+    await Promise.all([
+      new Promise((resolve, reject) => {
+        server.close((err) => {
+          if (err) return reject(err);
+          resolve();
+        });
+      })
+      // Add other async operations here if needed
+    ]);
+    logger.info('Server shut down.');
     process.exit(0);
-  });
+  } catch (err) {
+    logger.error(`Error during shutdown: ${err.message}`);
+    process.exit(1);
+  }
 });
